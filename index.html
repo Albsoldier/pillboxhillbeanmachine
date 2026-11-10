@@ -268,10 +268,13 @@ document.addEventListener("click", e => {
 function render(){
   const rows = MENU.filter(m => cart[m.id]);
   const count = rows.reduce((s, m) => s + cart[m.id], 0);
-  const total = rows.reduce((s, m) => s + m.price * cart[m.id], 0);
+  const subtotal = rows.reduce((s, m) => s + m.price * cart[m.id], 0);
+const total = subtotal + (rows.length ? DELIVERY_FEE : 0);
   renderMenu();
   $("cart").innerHTML = rows.length
     ? rows.map(m => `<div class="line"><span>${cart[m.id]} × ${m.name}</span><span>${money(m.price * cart[m.id])}</span></div>`).join("")
+      + `<div class="line"><span>Subtotal</span><span>${money(subtotal)}</span></div>`
+      + `<div class="line"><span>Delivery fee</span><span>${money(DELIVERY_FEE)}</span></div>`
       + `<div class="total"><span>Total</span><span class="serif">${money(total)}</span></div>`
     : `<p class="empty">Nothing yet. Add a drink from the menu.</p>`;
   $("send").disabled = !rows.length;
