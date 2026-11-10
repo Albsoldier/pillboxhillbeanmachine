@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pillbox Hill Bean Machine</title>
+<meta name="description" content="Coffee, made fast and made right. Order ahead from Pillbox Hill Bean Machine.">
+<style>
+:root{--bg:#e9eeed;--ink:#17201f;--mute:#566462;--line:#b9c4c2;--card:#f7faf9;--accent:#007a70;--accent-ink:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#121918;--ink:#e6eeec;--mute:#92a3a0;--line:#2d3a38;--card:#1a2322;--accent:#3fd0c0;--accent-ink:#06201d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Georgia,"Times New Roman",serif}
+h1,h2,h3,button,input,textarea,label,.price{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif}
+header{padding:64px 24px 40px;max-width:960px;margin:auto}
+h1{font-size:clamp(2.6rem,9vw,5.5rem);line-height:.95;margin:0 0 20px;letter-spacing:-.03em;font-weight:800}
+header p{max-width:34rem;color:var(--mute);margin:0 0 24px}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:12px 22px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:960px;margin:auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 340px;gap:40px}
+h2{font-size:1.5rem;margin:0 0 16px}
+.item{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}
+.item h3{margin:0;font-size:1.05rem}
+.item small{color:var(--mute)}
+.price{font-weight:700;white-space:nowrap}
+.add{background:none;color:var(--accent);border:2px solid var(--accent);border-radius:6px;padding:6px 14px;font-weight:700;cursor:pointer}
+.add:hover{background:var(--accent);color:var(--accent-ink)}
+aside{align-self:start;position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
+.line{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-family:"Trebuchet MS",system-ui,sans-serif;font-size:.95rem}
+.line button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:4px;width:26px;height:26px;cursor:pointer}
+.total{display:flex;justify-content:space-between;font-weight:800;border-top:2px solid var(--ink);margin-top:10px;padding-top:10px;font-family:"Trebuchet MS",system-ui,sans-serif}
+label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 4px}
+input,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-size:1rem}
+.hp{position:absolute;left:-9999px}
+#msg{margin-top:12px;font-family:"Trebuchet MS",system-ui,sans-serif;font-size:.95rem}
+.empty{color:var(--mute);font-family:"Trebuchet MS",system-ui,sans-serif;font-size:.95rem}
+footer{max-width:960px;margin:auto;padding:24px;border-top:1px solid var(--line);color:var(--mute);font-size:.9rem}
+@media (max-width:800px){main{grid-template-columns:1fr}aside{position:static}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Pillbox Hill<br>Bean Machine</h1>
+  <p>Coffee, made fast and made right. Order ahead and we'll have it ready when you walk in.</p>
+  <a class="btn" href="#order">Order now</a>
+</header>
+
+<main id="order">
+  <section aria-labelledby="menu-h">
+    <h2 id="menu-h">Menu</h2>
+    <div id="menu"></div>
+  </section>
+
+  <aside aria-labelledby="cart-h">
+    <h2 id="cart-h">Your order</h2>
+    <div id="cart" aria-live="polite"></div>
+    <form id="form">
+      <label for="name">Your name</label>
+      <input id="name" required maxlength="60" autocomplete="name">
+      <label for="contact">Phone or Discord name (optional)</label>
+      <input id="contact" maxlength="80">
+      <label for="note">Notes</label>
+      <textarea id="note" rows="2" maxlength="300"></textarea>
+      <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p style="margin:16px 0 0"><button class="btn" id="send" type="submit" disabled>Place order</button></p>
+      <div id="msg" role="status"></div>
+    </form>
+  </aside>
+</main>
+
+<footer>Pillbox Hill Bean Machine</footer>
+
+<script>
+// ====== EDIT THESE ======
+// Your Cloudflare Worker URL (see README). Never put the Discord webhook URL here.
+const ORDER_ENDPOINT = "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
+const MENU = [
+  {id:"esp",  name:"Espresso",       desc:"Double shot",              price:3.00},
+  {id:"amer", name:"Americano",      desc:"Espresso, hot water",      price:3.50},
+  {id:"lat",  name:"Latte",          desc:"Espresso, steamed milk",   price:4.75},
+  {id:"cap",  name:"Cappuccino",     desc:"Equal parts foam and milk",price:4.50},
+  {id:"cold", name:"Cold brew",      desc:"Steeped 18 hours",         price:4.50},
+  {id:"mocha",name:"Mocha",          desc:"Espresso, chocolate, milk",price:5.25},
+  {id:"crois",name:"Butter croissant",desc:"Baked this morning",      price:3.75}
+];
+const CURRENCY = "$";
+// ========================
+
+const cart = {};
+const $ = id => document.getElementById(id);
+const money = n => CURRENCY + n.toFixed(2);
+
+$("menu").innerHTML = MENU.map(m => `
+  <div class="item">
+    <div><h3>${m.name}</h3><small>${m.desc}</small></div>
+    <div style="display:flex;gap:14px;align-items:center">
+      <span class="price">${money(m.price)}</span>
+      <button class="add" data-id="${m.id}" aria-label="Add ${m.name}">Add</button>
+    </div>
+  </div>`).join("");
+
+document.addEventListener("click", e => {
+  const add = e.target.closest(".add");
+  const chg = e.target.closest("[data-chg]");
+  if (add) cart[add.dataset.id] = (cart[add.dataset.id] || 0) + 1;
+  else if (chg) {
+    const id = chg.dataset.id;
+    cart[id] = (cart[id] || 0) + Number(chg.dataset.chg);
+    if (cart[id] <= 0) delete cart[id];
+  } else return;
+  render();
+});
+
+function render() {
+  const rows = MENU.filter(m => cart[m.id]);
+  const total = rows.reduce((s, m) => s + m.price * cart[m.id], 0);
+  $("cart").innerHTML = rows.length
+    ? rows.map(m => `<div class="line"><span>${cart[m.id]} × ${m.name}</span><span>
+        <button data-chg="-1" data-id="${m.id}" aria-label="Remove one ${m.name}">−</button>
+        <button data-chg="1" data-id="${m.id}" aria-label="Add one ${m.name}">+</button></span></div>`).join("")
+      + `<div class="total"><span>Total</span><span>${money(total)}</span></div>`
+    : `<p class="empty">Your order is empty. Add something from the menu.</p>`;
+  $("send").disabled = !rows.length;
+}
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const items = MENU.filter(m => cart[m.id]).map(m => ({name:m.name, qty:cart[m.id], price:m.price}));
+  if (!items.length) return;
+  const btn = $("send"), msg = $("msg");
+  btn.disabled = true; msg.textContent = "Sending your order…";
+  try {
+    const res = await fetch(ORDER_ENDPOINT, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name:$("name").value.trim(), contact:$("contact").value.trim(),
+        note:$("note").value.trim(), website:$("website").value, items
+      })
+    });
+    if (!res.ok) throw new Error();
+    Object.keys(cart).forEach(k => delete cart[k]);
+    $("form").reset(); render();
+    msg.textContent = "Order sent. We'll start on it right away.";
+  } catch {
+    msg.textContent = "The order didn't go through. Try again, or order at the counter.";
+    btn.disabled = false;
+  }
+});
+render();
+</script>
+</body>
+</html>
