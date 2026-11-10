@@ -191,7 +191,6 @@ h3.cat{display:flex;align-items:center;gap:8px}
       <div><dt>Phone</dt><dd><a id="vPhone" href="#"></a></dd></div>
       <div><dt>Hours</dt><dd id="vHours"></dd></div>
     </dl>
-    <a class="btn" id="vDir" href="#" target="_blank" rel="noopener">Get directions</a>
   </div>
 </section>
 
@@ -305,8 +304,6 @@ const SHOP = {
   const ph = document.getElementById("vPhone");
   ph.textContent = SHOP.phone;
   ph.href = "tel:" + SHOP.phone.replace(/[^\d+]/g, "");
-  document.getElementById("vHours").innerHTML = SHOP.hours.map(h => h.replace(/&/g,"&amp;").replace(/</g,"&lt;")).join("<br>");
-  document.getElementById("vDir").href = "https://www.google.com/maps/dir/?api=1&destination=" + q;
 })();
 </script>
 </body>
