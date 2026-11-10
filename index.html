@@ -292,7 +292,7 @@ render();
 const SHOP = {
   address: "Pillbox Hill, Los Santos",
   phone: "2022",
-  hours: ["Mon–Sun  7:00–23:00", "Sat–Sun  7:00–23:00"]
+  hours: ["Mon–Fri  7:00–23:00", "Sat–Sun  7:00–23:00"]
 };
 // ====================================
 (function(){
@@ -304,6 +304,7 @@ const SHOP = {
   const ph = document.getElementById("vPhone");
   ph.textContent = SHOP.phone;
   ph.href = "tel:" + SHOP.phone.replace(/[^\d+]/g, "");
+  document.getElementById("vHours").innerHTML = SHOP.hours.map(h => h.replace(/&/g,"&amp;").replace(/</g,"&lt;")).join("<br>");
 })();
 </script>
 </body>
