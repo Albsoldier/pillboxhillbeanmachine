@@ -4,55 +4,150 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pillbox Hill Bean Machine</title>
+<meta name="theme-color" content="#0c0a09">
 <meta name="description" content="Coffee, made fast and made right. Order ahead from Pillbox Hill Bean Machine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#e9eeed;--ink:#17201f;--mute:#566462;--line:#b9c4c2;--card:#f7faf9;--accent:#007a70;--accent-ink:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#121918;--ink:#e6eeec;--mute:#92a3a0;--line:#2d3a38;--card:#1a2322;--accent:#3fd0c0;--accent-ink:#06201d}}
+:root{--black:#0c0a09;--panel:#16110e;--roast:#3b2517;--line:#2c231d;--text:#efe6dc;--mute:#9d8f82;--caramel:#c48a5a;--caramel-deep:#a8713f;--on-caramel:#1a0f08}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Georgia,"Times New Roman",serif}
-h1,h2,h3,button,input,textarea,label,.price{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif}
-header{padding:64px 24px 40px;max-width:960px;margin:auto}
-h1{font-size:clamp(2.6rem,9vw,5.5rem);line-height:.95;margin:0 0 20px;letter-spacing:-.03em;font-weight:800}
-header p{max-width:34rem;color:var(--mute);margin:0 0 24px}
-.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:12px 22px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-main{max-width:960px;margin:auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 340px;gap:40px}
-h2{font-size:1.5rem;margin:0 0 16px}
-.item{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}
-.item h3{margin:0;font-size:1.05rem}
-.item small{color:var(--mute)}
-.price{font-weight:700;white-space:nowrap}
-.add{background:none;color:var(--accent);border:2px solid var(--accent);border-radius:6px;padding:6px 14px;font-weight:700;cursor:pointer}
-.add:hover{background:var(--accent);color:var(--accent-ink)}
-aside{align-self:start;position:sticky;top:16px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
-.line{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-family:"Trebuchet MS",system-ui,sans-serif;font-size:.95rem}
-.line button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:4px;width:26px;height:26px;cursor:pointer}
-.total{display:flex;justify-content:space-between;font-weight:800;border-top:2px solid var(--ink);margin-top:10px;padding-top:10px;font-family:"Trebuchet MS",system-ui,sans-serif}
-label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 4px}
-input,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-size:1rem}
+html{scroll-behavior:smooth;color-scheme:dark}
+body{margin:0;background:var(--black);color:var(--text);font:400 17px/1.55 "Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.serif{font-family:"Bricolage Grotesque","Hanken Grotesk",system-ui,sans-serif;font-weight:700;letter-spacing:-.03em}
+:focus-visible{outline:3px solid var(--caramel);outline-offset:3px}
+
+/* hero: one inset roast-brown panel on the black page */
+.hero{background:var(--roast);color:var(--text);margin:12px;border-radius:28px;padding:28px clamp(20px,5vw,64px) clamp(36px,6vw,72px);min-height:calc(88vh - 24px);display:flex;flex-direction:column;justify-content:space-between}
+.hero nav{display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
+.hero nav a{color:var(--text);text-decoration:none;border:1px solid rgba(239,230,220,.35);border-radius:999px;padding:8px 18px;transition:background .15s}
+.hero nav a:hover{background:rgba(239,230,220,.12)}
+.hero h1{margin:48px 0 0;font-size:clamp(3.4rem,13vw,11.5rem);line-height:.88;letter-spacing:-.045em}
+.hero h1 i{display:block;font-style:normal}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-top:48px}
+.hero-foot p{max-width:26rem;margin:0;font-size:1.1rem;color:#d9cbbd}
+.btn{display:inline-block;background:var(--text);color:var(--black);border:0;border-radius:999px;padding:15px 30px;font:700 1rem "Hanken Grotesk",sans-serif;cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn.solid{background:var(--caramel);color:var(--on-caramel);width:100%}
+.btn.solid:hover:not(:disabled){background:var(--caramel-deep)}
+
+/* layout */
+main{max-width:1180px;margin:auto;padding:clamp(48px,8vw,104px) clamp(20px,5vw,64px);display:grid;grid-template-columns:1fr 380px;gap:clamp(32px,6vw,88px)}
+h2{font-size:clamp(2.4rem,5vw,3.6rem);line-height:1;margin:0 0 8px}
+.sub{color:var(--mute);margin:0 0 40px}
+h3.cat{font:700 .95rem "Hanken Grotesk",sans-serif;color:var(--caramel);margin:44px 0 6px}
+h3.cat:first-of-type{margin-top:0}
+
+/* menu rows */
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.item h4{margin:0;font-size:1.12rem;font-weight:500}
+.item small{grid-column:1;color:var(--mute);font-size:.95rem}
+.ctl{grid-row:1 / span 2;grid-column:2;display:flex;align-items:center;gap:16px}
+.price{font-variant-numeric:tabular-nums;min-width:3.6rem;text-align:right}
+.add,.step{border:1.5px solid #5a4a3e;background:transparent;color:var(--text);border-radius:999px;font:500 .9rem "Hanken Grotesk",sans-serif;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.add{padding:7px 18px}
+.add:hover,.step:hover{background:var(--caramel);border-color:var(--caramel);color:var(--on-caramel)}
+.stepper{display:inline-flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums}
+.step{width:32px;height:32px;padding:0;font-size:1.1rem;line-height:1}
+
+/* order panel */
+aside{align-self:start;position:sticky;top:24px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:28px}
+aside h2{font-size:2.1rem}
+.line{display:flex;justify-content:space-between;padding:7px 0;font-size:.98rem}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #5a4a3e;margin-top:14px;padding-top:14px;font-weight:700}
+.total .serif{font-size:1.9rem}
+label{display:block;font-size:.85rem;font-weight:700;margin:20px 0 6px;color:#d9cbbd}
+input,textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--black);color:var(--text);font:inherit;font-size:1rem}
+input:focus,textarea:focus{border-color:var(--caramel);outline:none;box-shadow:0 0 0 3px rgba(196,138,90,.25)}
 .hp{position:absolute;left:-9999px}
-#msg{margin-top:12px;font-family:"Trebuchet MS",system-ui,sans-serif;font-size:.95rem}
-.empty{color:var(--mute);font-family:"Trebuchet MS",system-ui,sans-serif;font-size:.95rem}
-footer{max-width:960px;margin:auto;padding:24px;border-top:1px solid var(--line);color:var(--mute);font-size:.9rem}
-@media (max-width:800px){main{grid-template-columns:1fr}aside{position:static}}
+.go{margin-top:24px}
+#msg{margin-top:14px;font-size:.95rem}
+.empty{color:var(--mute);margin:4px 0 0;font-size:.95rem}
+
+footer{border-top:1px solid var(--line);color:var(--mute);padding:40px clamp(20px,5vw,64px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer .serif{font-size:1.4rem;color:var(--text)}
+
+/* mobile order bar */
+.bar{display:none}
+@media (max-width:860px){
+  main{grid-template-columns:1fr}
+  aside{position:static}
+  .bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:5;background:var(--text);color:var(--black);border-radius:999px;padding:10px 10px 10px 24px;align-items:center;justify-content:space-between;box-shadow:0 12px 32px rgba(0,0,0,.6);font-weight:500}
+  .bar.show{display:flex}
+  .bar a{background:var(--black);color:var(--text);border-radius:999px;padding:10px 20px;text-decoration:none;font-weight:700}
+  footer{padding-bottom:96px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* v3: compact left logo, hero illustration, category icons */
+.hero{min-height:0;padding-bottom:clamp(28px,5vw,56px)}
+.hero nav a.logo{display:flex;align-items:center;gap:10px;border:0;padding:0;border-radius:0;font:700 .95rem/1.1 "Bricolage Grotesque","Hanken Grotesk",sans-serif;letter-spacing:-.01em}
+.hero nav a.logo:hover{background:none}
+.mark{width:30px;height:30px;flex:none;color:var(--caramel)}
+.hero-body{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(16px,4vw,56px);align-items:center;margin-top:clamp(16px,4vw,40px)}
+.hero h1{margin:0 0 20px;font-size:clamp(2.6rem,6.2vw,5.2rem);line-height:.96;letter-spacing:-.04em}
+.hero-copy p{margin:0 0 28px;max-width:24rem;font-size:1.1rem;color:#d9cbbd}
+.art svg{display:block;width:100%;height:auto;max-height:520px}
+h3.cat{display:flex;align-items:center;gap:8px}
+.ci{width:22px;height:22px}
+@media (max-width:860px){.hero-body{grid-template-columns:1fr}.art{order:2;max-width:420px;margin:8px auto 0}}
+
+/* v4: real photos */
+.art{position:relative;aspect-ratio:520/440}
+.art svg{position:absolute;inset:0;height:100%;max-height:none}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:24px;z-index:1}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 12px}
+.strip img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:20px;display:block;background:var(--panel)}
+.strip:not(:has(img)){display:none}
+@media (max-width:860px){.strip{grid-template-columns:repeat(2,1fr)}}
+
+/* v5: photo background on the hero */
+.hero{background:linear-gradient(90deg,rgba(24,13,7,.92) 0%,rgba(36,21,12,.78) 45%,rgba(36,21,12,.35) 100%),url("images/hero-bg.jpg") center/cover no-repeat,var(--roast);min-height:min(82vh,760px)}
+.hero-body{grid-template-columns:minmax(0,640px);align-items:end;flex:1;margin-top:clamp(40px,10vw,120px)}
+.hero h1{text-shadow:0 2px 24px rgba(0,0,0,.35)}
+@media (max-width:860px){.hero{background:linear-gradient(180deg,rgba(24,13,7,.7) 0%,rgba(24,13,7,.88) 100%),url("images/hero-bg.jpg") 62% center/cover no-repeat,var(--roast)}}
 </style>
 </head>
 <body>
-<header>
-  <h1>Pillbox Hill<br>Bean Machine</h1>
-  <p>Coffee, made fast and made right. Order ahead and we'll have it ready when you walk in.</p>
-  <a class="btn" href="#order">Order now</a>
-</header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<symbol id="i-hot" viewBox="0 0 24 24"><path d="M4 9h12v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3c0 1.5 1.5 1.5 1.5 3M12 3c0 1.5 1.5 1.5 1.5 3"/></symbol>
+<symbol id="i-cold" viewBox="0 0 24 24"><path d="M6 7h12l-1.5 13h-9z"/><path d="M13 7l3-5"/><path d="M8 13h8"/></symbol>
+<symbol id="i-bake" viewBox="0 0 24 24"><path d="M3 16c1-5 5-9 9-9s8 4 9 9c-2 1-3 0-4.5-1-1.5 1-3.5 1-5 0-1.5 1-3 2-4.5 1z"/><path d="M9.5 8.5l1.5 6M14.5 8.5l-1.5 6"/></symbol>
+</g></svg>
+
+<section class="hero">
+  <nav>
+    <a class="logo" href="#top" aria-label="Pillbox Hill Bean Machine"><svg class="mark" aria-hidden="true"><use href="#i-hot"/></svg><span>Pillbox Hill<br>Bean Machine</span></a>
+    <a href="#order">Order ahead</a>
+  </nav>
+  <div class="hero-body" id="top">
+    <div class="hero-copy">
+      <h1 class="serif">Coffee, made fast and made right.</h1>
+      <p>Order ahead and it will be ready when you walk in.</p>
+      <a class="btn" href="#order">Start your order</a>
+    </div>
+  </div>
+</section>
+
+
+<section class="strip" aria-label="Photos from the shop">
+  <img src="images/drink-1.jpg" alt="Iced coffee" loading="lazy" onerror="this.remove()">
+  <img src="images/drink-2.jpg" alt="Espresso being poured" loading="lazy" onerror="this.remove()">
+  <img src="images/drink-3.jpg" alt="Cappuccino with latte art" loading="lazy" onerror="this.remove()">
+  <img src="images/drink-4.jpg" alt="Fresh pastries" loading="lazy" onerror="this.remove()">
+</section>
 
 <main id="order">
   <section aria-labelledby="menu-h">
-    <h2 id="menu-h">Menu</h2>
+    <h2 id="menu-h" class="serif">The menu</h2>
+    <p class="sub">Choose your drinks, then send your order on the right.</p>
     <div id="menu"></div>
   </section>
 
-  <aside aria-labelledby="cart-h">
-    <h2 id="cart-h">Your order</h2>
+  <aside id="checkout" aria-labelledby="cart-h">
+    <h2 id="cart-h" class="serif">Your order</h2>
     <div id="cart" aria-live="polite"></div>
     <form id="form">
       <label for="name">Your name</label>
@@ -62,65 +157,78 @@ footer{max-width:960px;margin:auto;padding:24px;border-top:1px solid var(--line)
       <label for="note">Notes</label>
       <textarea id="note" rows="2" maxlength="300"></textarea>
       <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <p style="margin:16px 0 0"><button class="btn" id="send" type="submit" disabled>Place order</button></p>
+      <div class="go"><button class="btn solid" id="send" type="submit" disabled>Place order</button></div>
       <div id="msg" role="status"></div>
     </form>
   </aside>
 </main>
 
-<footer>Pillbox Hill Bean Machine</footer>
+<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead, pay at pickup.</span></footer>
+
+<div class="bar" id="bar"><span id="barText"></span><a href="#checkout">Review order</a></div>
 
 <script>
 // ====== EDIT THESE ======
-// Your Cloudflare Worker URL (see README). Never put the Discord webhook URL here.
+// Your Cloudflare Worker URL (see setup steps). Never put the Discord webhook URL here.
 const ORDER_ENDPOINT = "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
-const MENU = [
-  {id:"esp",  name:"Espresso",       desc:"Double shot",              price:3.00},
-  {id:"amer", name:"Americano",      desc:"Espresso, hot water",      price:3.50},
-  {id:"lat",  name:"Latte",          desc:"Espresso, steamed milk",   price:4.75},
-  {id:"cap",  name:"Cappuccino",     desc:"Equal parts foam and milk",price:4.50},
-  {id:"cold", name:"Cold brew",      desc:"Steeped 18 hours",         price:4.50},
-  {id:"mocha",name:"Mocha",          desc:"Espresso, chocolate, milk",price:5.25},
-  {id:"crois",name:"Butter croissant",desc:"Baked this morning",      price:3.75}
-];
 const CURRENCY = "$";
+const MENU = [
+  {cat:"Hot coffee", id:"esp",  name:"Espresso",   desc:"Double shot",               price:3.00},
+  {cat:"Hot coffee", id:"amer", name:"Americano",  desc:"Espresso, hot water",       price:3.50},
+  {cat:"Hot coffee", id:"cap",  name:"Cappuccino", desc:"Equal parts espresso, milk and foam", price:4.50},
+  {cat:"Hot coffee", id:"lat",  name:"Latte",      desc:"Espresso, steamed milk",    price:4.75},
+  {cat:"Hot coffee", id:"mocha",name:"Mocha",      desc:"Espresso, chocolate, steamed milk", price:5.25},
+  {cat:"Cold",       id:"cold", name:"Cold brew",  desc:"Steeped for 18 hours",      price:4.50},
+  {cat:"Cold",       id:"ilat", name:"Iced latte", desc:"Espresso, cold milk, ice",  price:5.00},
+  {cat:"Bakery",     id:"crois",name:"Butter croissant", desc:"Baked this morning",  price:3.75}
+];
 // ========================
 
+const ICONS = {"Hot coffee":"i-hot","Cold":"i-cold","Bakery":"i-bake"};
 const cart = {};
 const $ = id => document.getElementById(id);
 const money = n => CURRENCY + n.toFixed(2);
 
-$("menu").innerHTML = MENU.map(m => `
-  <div class="item">
-    <div><h3>${m.name}</h3><small>${m.desc}</small></div>
-    <div style="display:flex;gap:14px;align-items:center">
-      <span class="price">${money(m.price)}</span>
-      <button class="add" data-id="${m.id}" aria-label="Add ${m.name}">Add</button>
-    </div>
-  </div>`).join("");
+function controls(m){
+  const q = cart[m.id] || 0;
+  return q
+    ? `<span class="stepper"><button class="step" data-chg="-1" data-id="${m.id}" aria-label="Remove one ${m.name}">−</button><span aria-live="polite">${q}</span><button class="step" data-chg="1" data-id="${m.id}" aria-label="Add one ${m.name}">+</button></span>`
+    : `<button class="add" data-chg="1" data-id="${m.id}" aria-label="Add ${m.name}">Add</button>`;
+}
+
+function renderMenu(){
+  let html = "", last = "";
+  MENU.forEach(m => {
+    if (m.cat !== last){ html += `<h3 class="cat"><svg class="ci" aria-hidden="true"><use href="#${ICONS[m.cat]||"i-hot"}"/></svg>${m.cat}</h3>`; last = m.cat; }
+    html += `<div class="item"><h4>${m.name}</h4><small>${m.desc}</small>
+      <div class="ctl"><span class="price">${money(m.price)}</span>${controls(m)}</div></div>`;
+  });
+  $("menu").innerHTML = html;
+}
 
 document.addEventListener("click", e => {
-  const add = e.target.closest(".add");
-  const chg = e.target.closest("[data-chg]");
-  if (add) cart[add.dataset.id] = (cart[add.dataset.id] || 0) + 1;
-  else if (chg) {
-    const id = chg.dataset.id;
-    cart[id] = (cart[id] || 0) + Number(chg.dataset.chg);
-    if (cart[id] <= 0) delete cart[id];
-  } else return;
+  const b = e.target.closest("[data-chg]");
+  if (!b) return;
+  const id = b.dataset.id;
+  cart[id] = (cart[id] || 0) + Number(b.dataset.chg);
+  if (cart[id] <= 0) delete cart[id];
   render();
+  const again = document.querySelector(`#menu [data-id="${id}"]`);
+  if (again) again.focus();
 });
 
-function render() {
+function render(){
   const rows = MENU.filter(m => cart[m.id]);
+  const count = rows.reduce((s, m) => s + cart[m.id], 0);
   const total = rows.reduce((s, m) => s + m.price * cart[m.id], 0);
+  renderMenu();
   $("cart").innerHTML = rows.length
-    ? rows.map(m => `<div class="line"><span>${cart[m.id]} × ${m.name}</span><span>
-        <button data-chg="-1" data-id="${m.id}" aria-label="Remove one ${m.name}">−</button>
-        <button data-chg="1" data-id="${m.id}" aria-label="Add one ${m.name}">+</button></span></div>`).join("")
-      + `<div class="total"><span>Total</span><span>${money(total)}</span></div>`
-    : `<p class="empty">Your order is empty. Add something from the menu.</p>`;
+    ? rows.map(m => `<div class="line"><span>${cart[m.id]} × ${m.name}</span><span>${money(m.price * cart[m.id])}</span></div>`).join("")
+      + `<div class="total"><span>Total</span><span class="serif">${money(total)}</span></div>`
+    : `<p class="empty">Nothing yet. Add a drink from the menu.</p>`;
   $("send").disabled = !rows.length;
+  $("bar").classList.toggle("show", count > 0);
+  $("barText").textContent = `${count} ${count === 1 ? "item" : "items"} · ${money(total)}`;
 }
 
 $("form").addEventListener("submit", async e => {
@@ -141,7 +249,7 @@ $("form").addEventListener("submit", async e => {
     if (!res.ok) throw new Error();
     Object.keys(cart).forEach(k => delete cart[k]);
     $("form").reset(); render();
-    msg.textContent = "Order sent. We'll start on it right away.";
+    msg.textContent = "Order sent. We're making it now.";
   } catch {
     msg.textContent = "The order didn't go through. Try again, or order at the counter.";
     btn.disabled = false;
