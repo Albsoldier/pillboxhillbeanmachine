@@ -204,19 +204,34 @@ h3.cat{display:flex;align-items:center;gap:8px}
 const ORDER_ENDPOINT = "https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev";
 const CURRENCY = "$";
 const MENU = [
-  {cat:"Hot coffee", id:"esp",  name:"Espresso",   desc:"Double shot",               price:100.00},
-  {cat:"Hot coffee", id:"amer", name:"Americano",  desc:"Espresso, hot water",       price:100.50},
-  {cat:"Hot coffee", id:"cap",  name:"Cappuccino", desc:"Equal parts espresso, milk and foam", price:100.00},
-  {cat:"Hot coffee", id:"lat",  name:"Latte",      desc:"Espresso, steamed milk",    price:100.00},
-  {cat:"Hot coffee", id:"mocha",name:"Mocha",      desc:"Espresso, chocolate, steamed milk", price:100.00},
-  {cat:"Hot",       id:"cold", name:"Chai Latte",  desc:"Steeped for 18 hours",      price:100.00},
-  {cat:"Cold",       id:"ilat", name:"Iced latte", desc:"Espresso, cold milk, ice",  price:5.00},
-  {cat:"Hot",     id:"crois",name:"Hot Chocolate", desc:"Milk, cocoa powder",  price:100.00}
-  {cat:"Hot",     id:"crois",name:"Black Coffee", desc:"Instant Coffee",  price:100.00}
+  {cat:"Hot drinks", id:"i1", name:"Black coffee", desc:"", price:100.00},
+  {cat:"Hot drinks", id:"i2", name:"Cappuccino", desc:"", price:100.00},
+  {cat:"Hot drinks", id:"i3", name:"Americano", desc:"", price:100.00},
+  {cat:"Hot drinks", id:"i4", name:"Flat white", desc:"", price:100.00},
+  {cat:"Hot drinks", id:"i5", name:"Espresso", desc:"", price:100.00},
+  {cat:"Hot drinks", id:"i6", name:"Latte", desc:"", price:100.00},
+  {cat:"Hot drinks", id:"i7", name:"Hot chocolate", desc:"", price:100.00},
+  {cat:"Cold drinks", id:"i8", name:"Iced coffee", desc:"", price:100.00},
+  {cat:"Cold drinks", id:"i9", name:"Chai latte", desc:"", price:100.00},
+  {cat:"Cold drinks", id:"i10", name:"Tea", desc:"Served hot or cold", price:100.00},
+  {cat:"Bakery", id:"i11", name:"Toast (2 slices)", desc:"Packets of butter and jam available free of charge", price:100.00},
+  {cat:"Bakery", id:"i12", name:"Ham sandwich", desc:"Pre-packed", price:100.00},
+  {cat:"Bakery", id:"i13", name:"Cheese sandwich", desc:"Pre-packed", price:100.00},
+  {cat:"Bakery", id:"i14", name:"Egg mayo sandwich", desc:"Pre-packed", price:100.00},
+  {cat:"Bakery", id:"i15", name:"Chicken salad sandwich", desc:"Pre-packed", price:100.00},
+  {cat:"Bakery", id:"i16", name:"BLT sandwich", desc:"Pre-packed", price:100.00},
+  {cat:"Bakery", id:"i17", name:"Blueberry muffin", desc:"", price:100.00},
+  {cat:"Bakery", id:"i18", name:"Cherry muffin", desc:"", price:100.00},
+  {cat:"Bakery", id:"i19", name:"Chocolate chip muffin", desc:"", price:100.00},
+  {cat:"Bakery", id:"i20", name:"Double chocolate muffin", desc:"", price:100.00},
+  {cat:"Bakery", id:"i21", name:"Chocolate chip cookie", desc:"", price:100.00},
+  {cat:"Bakery", id:"i22", name:"Triple chocolate cookie", desc:"", price:100.00},
+  {cat:"Bakery", id:"i23", name:"Raisin cookie", desc:"", price:100.00},
+  {cat:"Bakery", id:"i24", name:"Oat cookie", desc:"", price:100.00}
 ];
 // ========================
 
-const ICONS = {"Hot coffee":"i-hot","Cold":"i-cold","Bakery":"i-bake"};
+const ICONS = {"Hot drinks":"i-hot","Cold":"i-cold","Bakery":"i-bake"};
 const cart = {};
 const $ = id => document.getElementById(id);
 const money = n => CURRENCY + n.toFixed(2);
@@ -232,7 +247,7 @@ function renderMenu(){
   let html = "", last = "";
   MENU.forEach(m => {
     if (m.cat !== last){ html += `<h3 class="cat"><svg class="ci" aria-hidden="true"><use href="#${ICONS[m.cat]||"i-hot"}"/></svg>${m.cat}</h3>`; last = m.cat; }
-    html += `<div class="item"><h4>${m.name}</h4><small>${m.desc}</small>
+    html += `<div class="item"><h4>${m.name}</h4>${m.desc?`<small>${m.desc}</small>`:""}
       <div class="ctl"><span class="price">${money(m.price)}</span>${controls(m)}</div></div>`;
   });
   $("menu").innerHTML = html;
@@ -293,7 +308,7 @@ render();
 const SHOP = {
   address: "Pillbox Hill, Los Santos",
   phone: "2022",
-  hours: ["Mon–Fri  7:00–23:00", "Sat–Sun  7:00–23:00"]
+  hours: ["Mon–Fri  7:00–23:00", "Sat–Sun  8:00–23:00"]
 };
 // ====================================
 (function(){
