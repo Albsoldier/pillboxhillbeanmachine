@@ -133,6 +133,21 @@ h3.cat{display:flex;align-items:center;gap:8px}
 .strip:not(:has(img)){display:none}
 @media (max-width:860px){.strip{grid-template-columns:repeat(2,1fr)}}
 
+
+/* Hero showcase: layered featured-coffee card and floating shop notes */
+.hero-showcase{position:relative;min-height:430px;display:flex;align-items:center;justify-content:center;padding:34px 18px 52px;isolation:isolate}
+.showcase-glow{position:absolute;width:72%;height:72%;border-radius:50%;background:radial-gradient(circle,rgba(222,157,91,.27),rgba(222,157,91,0) 68%);filter:blur(12px);z-index:-1;animation:glowBreath 5s ease-in-out infinite}
+.featured-drink{position:relative;width:min(100%,390px);min-height:350px;padding:24px;border:1px solid rgba(255,235,210,.27);border-radius:25px;background:linear-gradient(145deg,rgba(255,244,229,.18),rgba(45,25,15,.72));box-shadow:0 28px 80px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.15);backdrop-filter:blur(14px);overflow:hidden;transform:rotate(-2deg);animation:cardFloat 6s ease-in-out infinite}
+.featured-drink:before{content:"";position:absolute;width:240px;height:240px;right:-80px;top:35px;border-radius:50%;border:1px solid rgba(255,228,195,.16);box-shadow:0 0 0 18px rgba(255,228,195,.025),0 0 0 38px rgba(255,228,195,.02)}
+.featured-top{display:flex;justify-content:space-between;align-items:center;color:#f1c99f;font-size:.68rem;letter-spacing:.2em;font-weight:800}.featured-sparkle{font-size:1.4rem;color:#f3c58e}
+.featured-cup{height:190px;display:grid;place-items:center;font-size:9rem;line-height:1;filter:drop-shadow(0 18px 15px rgba(0,0,0,.45));animation:cupBob 4s ease-in-out infinite}
+.featured-info{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}.featured-eyebrow{font-size:.58rem;letter-spacing:.18em;color:#d7b28e}.featured-info h2{font-family:Georgia,serif;font-size:1.65rem;line-height:1.05;margin:7px 0;color:#fff0df}.featured-info p{font-size:.78rem;color:#d9c7b6;margin:0}.featured-stamp{flex:none;border:1px solid rgba(239,195,145,.6);border-radius:50%;width:54px;height:54px;display:grid;place-content:center;text-align:center;font-size:.55rem;line-height:1.25;letter-spacing:.08em;color:#f2c99d;transform:rotate(10deg)}
+.showcase-note{position:absolute;display:flex;align-items:center;gap:10px;padding:11px 15px;border:1px solid rgba(255,235,210,.22);border-radius:15px;background:rgba(27,16,11,.78);box-shadow:0 12px 35px rgba(0,0,0,.25);backdrop-filter:blur(12px);animation:noteFloat 5s ease-in-out infinite}.showcase-note strong,.showcase-note small{display:block}.showcase-note strong{font-size:.75rem;color:#fff0df}.showcase-note small{font-size:.65rem;color:#c8ad95;margin-top:3px}.note-icon{color:#e7b77f;font-size:1.3rem}.note-one{top:17%;right:-2%;}.note-two{bottom:17%;left:-2%;animation-delay:-2.5s}.showcase-caption{position:absolute;bottom:14px;left:9%;right:9%;display:flex;justify-content:space-between;color:rgba(255,235,210,.7);font-size:.58rem;letter-spacing:.17em}.hero-marquee{display:flex;justify-content:center;align-items:center;gap:clamp(12px,3vw,34px);padding:13px 10px 0;margin-top:16px;border-top:1px solid rgba(255,235,210,.22);color:#e6c4a1;font-size:.64rem;font-weight:800;letter-spacing:.2em;overflow:hidden}.hero-marquee b{color:#c58d5b;font-size:.9rem}
+@keyframes cardFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(-1deg)}}@keyframes cupBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}@keyframes noteFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}@keyframes glowBreath{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
+@media(max-width:860px){.hero-showcase{min-height:390px;margin-top:10px;padding-inline:12px}.featured-drink{max-width:350px}.note-one{right:-1%}.note-two{left:-1%}.hero-marquee{flex-wrap:wrap;gap:10px 18px;font-size:.56rem}}
+@media(max-width:480px){.hero-showcase{min-height:350px;padding-inline:4px}.featured-drink{min-height:315px;padding:18px}.featured-cup{height:165px;font-size:7.5rem}.showcase-note{padding:8px 10px}.showcase-note strong{font-size:.66rem}.showcase-note small{font-size:.58rem}.note-one{top:8%;right:-4%}.note-two{bottom:12%;left:-4%}.showcase-caption{font-size:.48rem}.hero-marquee{letter-spacing:.12em}}
+@media(prefers-reduced-motion:reduce){.featured-drink,.featured-cup,.showcase-note,.showcase-glow{animation:none!important}}
+
 /* v5: photo background on the hero */
 .hero{background:linear-gradient(90deg,rgba(24,13,7,.92) 0%,rgba(36,21,12,.78) 45%,rgba(36,21,12,.35) 100%),var(--hero-img) center/cover no-repeat,var(--roast);min-height:min(82vh,760px)}
 .hero-body{grid-template-columns:minmax(0,640px);align-items:end;flex:1;margin-top:clamp(40px,10vw,120px)}
@@ -183,7 +198,19 @@ h3.cat{display:flex;align-items:center;gap:8px}
       <p>Order ahead and it will be ready when you walk in.</p>
       <a class="btn" href="#order">Start your order</a>
     </div>
+    <div class="hero-showcase" aria-label="Featured coffee and shop highlights">
+      <div class="showcase-glow" aria-hidden="true"></div>
+      <div class="featured-drink">
+        <div class="featured-top"><span class="featured-label">THE HOUSE FAVORITE</span><span class="featured-sparkle" aria-hidden="true">✦</span></div>
+        <div class="featured-cup" aria-hidden="true">☕</div>
+        <div class="featured-info"><div><span class="featured-eyebrow">A LITTLE MOMENT OF JOY</span><h2>Made for your moment.</h2><p>Rich aroma. Smooth finish. Good company.</p></div><span class="featured-stamp">BREWED<br>FRESH</span></div>
+      </div>
+      <div class="showcase-note note-one"><span class="note-icon">✳</span><span><strong>Freshly brewed</strong><small>Every single cup</small></span></div>
+      <div class="showcase-note note-two"><span class="note-icon">♡</span><span><strong>Made with care</strong><small>From first sip to last</small></span></div>
+      <div class="showcase-caption"><span>GOOD COFFEE. GOOD DAYS.</span><span>✦ &nbsp; PILLBOX HILL</span></div>
+    </div>
   </div>
+  <div class="hero-marquee" aria-label="Our promise"><span>FRESH COFFEE</span><b>✳</b><span>FRESHLY BAKED</span><b>✳</b><span>MADE WITH LOVE</span><b>✳</b><span>FRESH COFFEE</span></div>
 </section>
 
 
