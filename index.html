@@ -347,19 +347,18 @@ h3.cat{display:flex;align-items:center;gap:8px}
       <div class="go"><button class="btn solid" id="send" type="submit" disabled>Place order</button></div>
       <div id="msg" role="status"></div>
     </form>
+    <section class="visit-info" id="visit" aria-labelledby="visit-h">
+      <div class="visit-divider"></div>
+      <p class="visit-kicker">COME BY ANYTIME</p>
+      <h2 id="visit-h" class="serif">Find us</h2>
+      <dl>
+        <div><dt>Address</dt><dd><a id="vAddr" href="#"></a></dd></div>
+        <div><dt>Phone</dt><dd><a id="vPhone" href="#"></a></dd></div>
+        <div><dt>Hours</dt><dd id="vHours"></dd></div>
+      </dl>
+    </section>
   </aside>
 </main>
-
-<section class="visit" id="visit" aria-labelledby="visit-h">
-  <div class="visit-info">
-    <h2 id="visit-h" class="serif">Find us</h2>
-    <dl>
-      <div><dt>Address</dt><dd><a id="vAddr" href="#"></a></dd></div>
-      <div><dt>Phone</dt><dd><a id="vPhone" href="#"></a></dd></div>
-      <div><dt>Hours</dt><dd id="vHours"></dd></div>
-    </dl>
-  </div>
-</section>
 
 
 <div class="history-overlay" id="historyDialog" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true">
@@ -572,5 +571,34 @@ const SHOP = {
   document.getElementById("vHours").innerHTML = SHOP.hours.map(h => h.replace(/&/g,"&amp;").replace(/</g,"&lt;")).join("<br>");
 })();
 </script>
+
+<style id="centered-menu-and-right-visit">
+/* Keep the menu page centered and group ordering + visit details in one tidy right rail. */
+.menu-page{
+  width:min(1440px,calc(100% - 32px));
+  margin:clamp(22px,4vw,48px) auto;
+  grid-template-columns:minmax(0,1fr) minmax(300px,360px);
+  justify-content:center;
+}
+.menu-page .menu-catalog{min-width:0}
+.menu-page aside{width:100%;min-width:0}
+.menu-page .visit-info{margin-top:28px;padding-top:4px}
+.menu-page .visit-divider{height:1px;margin:0 0 24px;background:linear-gradient(90deg,transparent,rgba(196,138,90,.55),transparent)}
+.menu-page .visit-kicker{margin:0 0 8px;color:var(--caramel);font-size:.67rem;font-weight:800;letter-spacing:.18em}
+.menu-page .visit-info h2{font-size:1.8rem;margin:0 0 14px}
+.menu-page .visit-info h2:after{content:"";display:block;width:36px;height:2px;margin-top:11px;background:var(--caramel)}
+.menu-page .visit-info dl{margin:0}
+.menu-page .visit-info dl>div{padding:13px 0;border-bottom:1px solid rgba(196,138,90,.16)}
+.menu-page .visit-info dt{font-size:.76rem;font-weight:700;color:var(--caramel);margin-bottom:3px}
+.menu-page .visit-info dd{margin:0;font-size:.96rem;color:#e8ddd1;overflow-wrap:anywhere}
+.menu-page .visit-info dd a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(196,138,90,.35)}
+.menu-page .visit-info dd a:hover{border-color:var(--caramel);color:#fff}
+@media(max-width:860px){
+  .menu-page{width:calc(100% - 20px);margin:18px auto;grid-template-columns:minmax(0,1fr)}
+  .menu-page .visit-info{margin-top:24px}
+}
+@media(max-width:480px){.menu-page{width:calc(100% - 16px)}}
+</style>
+
 </body>
 </html>
