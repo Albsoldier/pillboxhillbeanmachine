@@ -22,6 +22,34 @@ body{margin:0;background:var(--black);color:var(--text);font:400 17px/1.55 "Hank
 .hero nav{display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
 .hero nav a{color:var(--text);text-decoration:none;border:1px solid rgba(239,230,220,.35);border-radius:999px;padding:8px 18px;transition:background .15s}
 .hero nav a:hover{background:rgba(239,230,220,.12)}
+.hero-nav-actions{display:flex;align-items:center;gap:10px}
+.hero nav .history-trigger{color:var(--text);background:transparent;border:1px solid rgba(239,230,220,.35);border-radius:999px;padding:8px 18px;font:inherit;cursor:pointer;transition:background .15s,transform .2s}
+.hero nav .history-trigger:hover{background:rgba(239,230,220,.12);transform:translateY(-1px)}
+.hero nav .history-trigger span{display:inline-block;margin-left:5px;transition:transform .2s}
+.hero nav .history-trigger:hover span{transform:translate(2px,-2px)}
+/* independent Our History panel */
+.history-overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+.history-overlay.is-open{opacity:1;visibility:visible}
+.history-panel{position:relative;width:min(900px,100%);max-height:min(88vh,900px);overflow:auto;background:var(--panel);border:1px solid #5a4030;border-radius:26px;padding:clamp(26px,5vw,58px);box-shadow:0 28px 90px rgba(0,0,0,.55);transform:translateY(24px) scale(.985);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.history-overlay.is-open .history-panel{transform:translateY(0) scale(1)}
+.history-close{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--text);font-size:1.5rem;cursor:pointer}
+.history-close:hover{background:var(--roast);border-color:var(--caramel)}
+.history-kicker{margin:0 0 12px;color:var(--caramel);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.history-panel h2{max-width:680px;margin:0 48px 16px 0;font-size:clamp(2.5rem,7vw,5rem);line-height:.96}
+.history-intro{max-width:650px;margin:0 0 34px;color:#d9cbbd;font-size:1.08rem}
+.history-timeline{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.history-timeline:before{content:"";position:absolute;left:8%;right:8%;top:17px;height:1px;background:linear-gradient(90deg,transparent,var(--caramel),transparent);opacity:.6}
+.history-chapter{position:relative;padding:34px 18px 20px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02)}
+.history-chapter:before{content:"";position:absolute;top:10px;left:18px;width:14px;height:14px;border:3px solid var(--panel);border-radius:50%;background:var(--caramel);box-shadow:0 0 0 1px var(--caramel)}
+.history-chapter small{display:block;margin-bottom:8px;color:var(--caramel);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.history-chapter h3{margin:0 0 8px;font-size:1.2rem}
+.history-chapter p{margin:0;color:var(--mute);font-size:.96rem}
+.history-signoff{display:flex;align-items:center;gap:12px;margin:28px 0 0;color:var(--mute);font-size:.9rem}
+.history-signoff:before{content:"";width:34px;height:1px;background:var(--caramel)}
+body.history-open{overflow:hidden}
+@media(max-width:640px){.hero-nav-actions{gap:7px}.hero nav .history-trigger,.hero nav a:not(.logo){padding:8px 12px;font-size:.82rem}.history-timeline{grid-template-columns:1fr}.history-timeline:before{left:24px;right:auto;top:18px;bottom:18px;width:1px;height:auto}.history-chapter{padding-left:46px}.history-chapter:before{left:17px}.history-panel{border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.history-overlay,.history-panel,.hero nav .history-trigger,.hero nav .history-trigger span{transition:none!important}}
+
 .hero h1{margin:48px 0 0;font-size:clamp(3.4rem,13vw,11.5rem);line-height:.88;letter-spacing:-.045em}
 .hero h1 i{display:block;font-style:normal}
 .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-top:48px}
@@ -141,7 +169,10 @@ h3.cat{display:flex;align-items:center;gap:8px}
 <section class="hero">
   <nav>
     <a class="logo" href="#top" aria-label="Pillbox Hill Bean Machine"><svg class="mark" aria-hidden="true"><use href="#i-hot"/></svg><span>Pillbox Hill<br>Bean Machine</span></a>
-    <a href="#order">Order ahead</a>
+    <div class="hero-nav-actions">
+      <button class="history-trigger" type="button" id="historyOpen" aria-haspopup="dialog" aria-controls="historyDialog">Our History <span aria-hidden="true">↗</span></button>
+      <a href="#order">Order ahead</a>
+    </div>
   </nav>
   <div class="hero-body" id="top">
     <div class="hero-copy">
@@ -196,7 +227,34 @@ h3.cat{display:flex;align-items:center;gap:8px}
   </div>
 </section>
 
-<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead, pay at pickup.</span></footer>
+
+<div class="history-overlay" id="historyDialog" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true">
+  <section class="history-panel" tabindex="-1">
+    <button class="history-close" type="button" id="historyClose" aria-label="Close Our History">×</button>
+    <p class="history-kicker">Pillbox Hill · Los Santos</p>
+    <h2 class="serif" id="historyTitle">A little coffee. A lot of character.</h2>
+    <p class="history-intro">Every neighborhood has its regulars, its familiar faces, and the places that make an ordinary day feel a little better. Pillbox Hill Bean Machine was made to be one of those places.</p>
+    <div class="history-timeline">
+      <article class="history-chapter">
+        <small>The beginning</small>
+        <h3>An idea takes shape</h3>
+        <p>It started with a simple thought: good coffee should be easy to find, served without the fuss, and worth coming back for.</p>
+      </article>
+      <article class="history-chapter">
+        <small>Finding our place</small>
+        <h3>Right here in Pillbox Hill</h3>
+        <p>We made our home in the heart of Los Santos, creating a familiar stop for early starts, busy afternoons, and everything in between.</p>
+      </article>
+      <article class="history-chapter">
+        <small>Today</small>
+        <h3>Made fast. Made right.</h3>
+        <p>From a quick espresso to a coffee and something fresh from the bakery, we're here to make your day run a little smoother.</p>
+      </article>
+    </div>
+    <p class="history-signoff">Thanks for being part of our story.</p>
+  </section>
+</div>
+\n<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead, pay at pickup.</span></footer>
 
 <div class="bar" id="bar"><span id="barText"></span><a href="#checkout">Review order</a></div>
 
@@ -310,6 +368,49 @@ $("form").addEventListener("submit", async e => {
 });
 $("feeNote").textContent = "Delivery fee: " + money(DELIVERY_FEE) + " per order";
 render();
+// Our History panel: opens independently of the menu and checkout.
+(function(){
+  const overlay = $("historyDialog");
+  const panel = overlay.querySelector(".history-panel");
+  const openButton = $("historyOpen");
+  const closeButton = $("historyClose");
+  let previousFocus = null;
+
+  function openHistory(){
+    previousFocus = document.activeElement;
+    overlay.classList.add("is-open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.classList.add("history-open");
+    openButton.setAttribute("aria-expanded", "true");
+    closeButton.focus();
+  }
+  function closeHistory(){
+    overlay.classList.remove("is-open");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("history-open");
+    openButton.setAttribute("aria-expanded", "false");
+    if (previousFocus) previousFocus.focus();
+  }
+
+  openButton.setAttribute("aria-expanded", "false");
+  openButton.addEventListener("click", openHistory);
+  closeButton.addEventListener("click", closeHistory);
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) closeHistory();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && overlay.classList.contains("is-open")) closeHistory();
+    if (e.key === "Tab" && overlay.classList.contains("is-open")) {
+      const focusable = [closeButton];
+      const first = focusable[0];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        panel.focus();
+      }
+    }
+  });
+})();
+
 
 // ====== EDIT YOUR SHOP DETAILS ======
 const SHOP = {
