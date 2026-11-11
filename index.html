@@ -187,6 +187,94 @@ h3.cat{display:flex;align-items:center;gap:8px}
 @media(max-width:860px){.hero-body{align-items:center!important;margin-top:28px!important}.hero-copy{ text-align:center!important}.hero-showcase{width:100%;}}
 </style>
 
+
+<style id="menu-page-redesign">
+/* A dedicated menu-page surface that belongs to the same warm, dark visual system. */
+.menu-page{
+  max-width:1440px;
+  margin:clamp(22px,4vw,48px) 12px;
+  padding:clamp(24px,4.5vw,64px);
+  grid-template-columns:minmax(0,1fr) minmax(300px,360px);
+  gap:clamp(28px,4.5vw,68px);
+  align-items:start;
+  background:
+    radial-gradient(ellipse at 8% 0%,rgba(196,138,90,.105),transparent 38%),
+    linear-gradient(145deg,#17110d 0%,#100d0b 62%,#17100c 100%);
+  border:1px solid rgba(196,138,90,.23);
+  border-radius:30px;
+  box-shadow:0 24px 80px rgba(0,0,0,.22),inset 0 1px rgba(255,235,210,.035);
+}
+.menu-catalog{min-width:0}
+.menu-page-heading{position:relative;padding-bottom:22px;border-bottom:1px solid rgba(196,138,90,.22)}
+.menu-kicker{margin:0 0 13px;color:var(--caramel);font-size:.68rem;font-weight:800;letter-spacing:.2em}
+.menu-page-heading h2{font-size:clamp(3rem,6vw,5.2rem);line-height:.92;letter-spacing:-.055em}
+.menu-heading-dot{color:var(--caramel)}
+.menu-page-heading .sub{max-width:540px;margin:16px 0 22px;color:#b9a99a;font-size:1rem}
+.menu-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:#9c8978;font-size:.62rem;font-weight:800;letter-spacing:.15em}
+.menu-meta span:first-child{display:flex;align-items:center;gap:8px;color:#d5b18e}
+.menu-meta i{width:7px;height:7px;border-radius:50%;background:#8da879;box-shadow:0 0 0 4px rgba(141,168,121,.12)}
+.menu-page .fee{margin:16px 0 0;color:#d6b18e;font-size:.9rem}
+.menu-list{padding-top:4px}
+.menu-list h3.cat{
+  margin:34px 0 10px;
+  padding:0 0 11px;
+  border-bottom:1px solid rgba(196,138,90,.2);
+  color:#e1b98f;
+  font-size:.78rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.menu-list h3.cat:first-child{margin-top:22px}
+.menu-list .ci{width:20px;height:20px;color:var(--caramel)}
+.menu-list .item{
+  position:relative;
+  margin:0 0 8px;
+  padding:14px 15px;
+  border:1px solid rgba(255,235,210,.055);
+  border-radius:15px;
+  background:linear-gradient(110deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.menu-list .item:hover{
+  background:linear-gradient(110deg,rgba(196,138,90,.11),rgba(255,255,255,.025));
+  border-color:rgba(196,138,90,.28);
+  transform:translateY(-1px);
+}
+.menu-list .item h4{font-size:1.02rem}
+.menu-list .item small{padding-left:41px;font-size:.82rem;color:#9e9083}
+.menu-list .item-icon{
+  width:31px;height:31px;
+  border-color:rgba(196,138,90,.2);
+  border-radius:11px;
+  background:rgba(196,138,90,.08);
+}
+.menu-page aside{
+  top:22px;
+  border-color:rgba(196,138,90,.25);
+  border-radius:22px;
+  background:linear-gradient(155deg,#21170f,#15100d 72%);
+  box-shadow:0 18px 48px rgba(0,0,0,.25),inset 0 1px rgba(255,235,210,.045);
+}
+.menu-page aside h2{font-size:1.9rem}
+.menu-page aside h2:after{content:"";display:block;width:38px;height:2px;margin-top:13px;background:var(--caramel)}
+.menu-page .add,.menu-page .step{border-color:#6a5140}
+.menu-page .add{font-weight:700}
+@media(max-width:860px){
+  .menu-page{margin:18px 10px;padding:26px 18px;grid-template-columns:1fr;border-radius:23px}
+  .menu-page aside{position:static}
+}
+@media(max-width:480px){
+  .menu-page{padding:23px 13px}
+  .menu-page-heading h2{font-size:3rem}
+  .menu-list .item{gap:5px 10px;padding:12px 10px}
+  .menu-list .item-icon{width:28px;height:28px}
+  .menu-list .item small{padding-left:38px}
+  .menu-list .ctl{gap:9px}
+  .menu-list .price{min-width:3.1rem;font-size:.9rem}
+  .menu-list .add{padding:7px 12px}
+}
+</style>
+
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -233,12 +321,16 @@ h3.cat{display:flex;align-items:center;gap:8px}
   <img src="images/drink-4.jpg" alt="Fresh pastries" loading="lazy" onerror="this.remove()">
 </section>
 
-<main id="order">
-  <section aria-labelledby="menu-h">
-    <h2 id="menu-h" class="serif">The menu</h2>
-    <p class="sub">Choose your drinks, then send your order on the right.</p>
+<main id="order" class="menu-page">
+  <section class="menu-catalog" aria-labelledby="menu-h">
+    <div class="menu-page-heading">
+      <p class="menu-kicker">PILLBOX HILL BEAN MACHINE · GOOD THINGS, MADE FRESH</p>
+      <h2 id="menu-h" class="serif">The menu<span class="menu-heading-dot">.</span></h2>
+      <p class="sub">A little something for every kind of day. Choose your favorites and make them yours.</p>
+      <div class="menu-meta"><span><i></i> MADE TO ORDER</span><span>COFFEE · BAKERY · GOOD MOOD</span></div>
+    </div>
     <p class="fee" id="feeNote"></p>
-    <div id="menu"></div>
+    <div id="menu" class="menu-list"></div>
   </section>
 
   <aside id="checkout" aria-labelledby="cart-h">
