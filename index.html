@@ -119,6 +119,9 @@ footer .serif{font-size:1.4rem;color:var(--text)}
 .art svg{display:block;width:100%;height:auto;max-height:520px}
 h3.cat{display:flex;align-items:center;gap:8px}
 .ci{width:22px;height:22px}
+.item-name{display:flex;align-items:center;gap:11px;min-width:0}
+.item-icon{width:30px;height:30px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:17px;line-height:1}
+.item h4{min-width:0}
 @media (max-width:860px){.hero-body{grid-template-columns:1fr}.art{order:2;max-width:420px;margin:8px auto 0}}
 
 /* v4: real photos */
@@ -293,6 +296,13 @@ const MENU = [
 // ========================
 
 const ICONS = {"Hot drinks":"i-hot","Cold":"i-cold","Bakery":"i-bake"};
+// Individual menu icons, displayed beside each product name.
+const ITEM_ICONS = {
+  i1:"☕", i2:"☕", i3:"🖤", i4:"🥛", i5:"⚫", i6:"🥛", i7:"🍫",
+  i8:"🧊", i9:"🍵", i10:"🫖",
+  i11:"🍞", i12:"🥪", i13:"🧀", i14:"🥚", i15:"🥗", i16:"🥓",
+  i17:"🫐", i18:"🍒", i19:"🍪", i20:"🍫", i21:"🍪", i22:"🍫", i23:"🍇", i24:"🌾"
+};
 const cart = {};
 const $ = id => document.getElementById(id);
 const money = n => CURRENCY + n.toFixed(2);
@@ -308,7 +318,7 @@ function renderMenu(){
   let html = "", last = "";
   MENU.forEach(m => {
     if (m.cat !== last){ html += `<h3 class="cat"><svg class="ci" aria-hidden="true"><use href="#${ICONS[m.cat]||"i-hot"}"/></svg>${m.cat}</h3>`; last = m.cat; }
-    html += `<div class="item"><h4>${m.name}</h4>${m.desc?`<small>${m.desc}</small>`:""}
+    html += `<div class="item"><h4 class="item-name"><span class="item-icon" aria-hidden="true">${ITEM_ICONS[m.id]||"☕"}</span><span>${m.name}</span></h4>${m.desc?`<small>${m.desc}</small>`:""}
       <div class="ctl"><span class="price">${money(m.price)}</span>${controls(m)}</div></div>`;
   });
   $("menu").innerHTML = html;
