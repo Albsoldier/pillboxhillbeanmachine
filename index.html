@@ -275,6 +275,42 @@ h3.cat{display:flex;align-items:center;gap:8px}
 }
 </style>
 
+
+<style id="drink-customizer-styles">
+.customize-overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.8);backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.customize-overlay.is-open{opacity:1;visibility:visible}
+.customize-panel{position:relative;width:min(560px,100%);max-height:90vh;overflow:auto;padding:clamp(24px,5vw,40px);border:1px solid #5a4030;border-radius:24px;background:linear-gradient(155deg,#21170f,#15100d 72%);box-shadow:0 28px 90px rgba(0,0,0,.6);transform:translateY(16px);transition:transform .25s}
+.customize-overlay.is-open .customize-panel{transform:translateY(0)}
+.customize-close{position:absolute;top:15px;right:15px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--text);font-size:1.4rem;cursor:pointer}
+.customize-kicker{margin:0 0 8px;color:var(--caramel);font-size:.7rem;font-weight:800;letter-spacing:.18em}
+.customize-panel h2{margin:0 42px 5px 0;font-size:clamp(2rem,6vw,2.8rem)}
+.customize-product{margin:0 0 22px;color:var(--mute)}
+.customize-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.customize-field label{margin:10px 0 6px;color:#d9cbbd}
+.customize-field select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:var(--black);color:var(--text);font:inherit}
+.customize-extra{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:14px 0 4px;padding:13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.customize-extra input{width:18px;height:18px;accent-color:var(--caramel)}
+.customize-extra span{font-weight:500}.customize-extra small{color:var(--caramel)}
+.customize-total{display:flex;justify-content:space-between;align-items:center;margin:20px 0 16px;padding-top:15px;border-top:1px solid var(--line)}
+.customize-total strong{font:700 1.55rem Georgia,serif;color:var(--caramel)}
+.customize-panel .btn{width:100%}
+.customize-footnote{margin:10px 0 0;text-align:center;color:var(--mute);font-size:.78rem}
+@media(max-width:480px){.customize-grid{grid-template-columns:1fr}.customize-extra{grid-column:1}.customize-panel{padding:24px 19px}}
+@media(prefers-reduced-motion:reduce){.customize-overlay,.customize-panel{transition:none!important}}
+</style>
+
+
+<style id="customized-cart-styles">
+.cart-line{align-items:flex-start;gap:10px}
+.cart-line-copy{min-width:0;flex:1}
+.cart-line-copy small{display:block;margin-top:3px;color:var(--mute);font-size:.76rem;line-height:1.4}
+.cart-line-price{display:flex;flex-direction:column;align-items:flex-end;gap:7px;white-space:nowrap}
+.cart-line-price .stepper{gap:6px}
+.cart-line-price .step{width:25px;height:25px;font-size:.95rem}
+.menu-list .ctl{grid-row:1 / span 2;grid-column:2;display:flex;align-items:center;gap:12px}
+@media(max-width:480px){.menu-list .ctl{gap:7px}.menu-list .add{padding:7px 10px;font-size:.82rem}}
+</style>
+
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -361,6 +397,26 @@ h3.cat{display:flex;align-items:center;gap:8px}
 </main>
 
 
+
+<div class="customize-overlay" id="customizeDialog" role="dialog" aria-modal="true" aria-labelledby="customizeTitle" aria-hidden="true">
+  <section class="customize-panel">
+    <button class="customize-close" type="button" id="customizeClose" aria-label="Close customization">×</button>
+    <p class="customize-kicker">MAKE IT YOURS</p>
+    <h2 class="serif" id="customizeTitle">Customize your drink</h2>
+    <p class="customize-product" id="customizeProduct"></p>
+    <div class="customize-grid">
+      <div class="customize-field"><label for="drinkMilk">Milk</label><select id="drinkMilk"><option value="Whole milk">Whole milk</option><option value="Skimmed milk">Skimmed milk</option><option value="Oat milk">Oat milk (+20)</option><option value="Almond milk">Almond milk (+20)</option><option value="Soy milk">Soy milk (+20)</option></select></div>
+      <div class="customize-field"><label for="drinkShot">Espresso</label><select id="drinkShot"><option value="Single">Single</option><option value="Double" selected>Double</option><option value="Extra shot">Extra shot (+30)</option></select></div>
+      <div class="customize-field"><label for="drinkSyrup">Syrup</label><select id="drinkSyrup"><option value="None">None</option><option value="Vanilla">Vanilla (+15)</option><option value="Caramel">Caramel (+15)</option><option value="Hazelnut">Hazelnut (+15)</option></select></div>
+      <div class="customize-field"><label for="drinkSugar">Sugar</label><select id="drinkSugar"><option value="No sugar">No sugar</option><option value="1 portion" selected>1 portion</option><option value="2 portions">2 portions</option><option value="3 portions">3 portions</option></select></div>
+      <label class="customize-extra"><input type="checkbox" id="drinkCream"><span>Whipped cream <small>+15</small></span></label>
+    </div>
+    <div class="customize-total"><span>Price per drink</span><strong id="customizePrice"></strong></div>
+    <button class="btn solid" type="button" id="addCustomized">Add to order</button>
+    <p class="customize-footnote">Optional extras are added to the drink price.</p>
+  </section>
+</div>
+
 <div class="history-overlay" id="historyDialog" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true">
   <section class="history-panel" tabindex="-1">
     <button class="history-close" type="button" id="historyClose" aria-label="Close Our History">×</button>
@@ -434,57 +490,161 @@ const ITEM_ICONS = {
   i17:"🫐", i18:"🍒", i19:"🍪", i20:"🍫", i21:"🍪", i22:"🍫", i23:"🍇", i24:"🌾"
 };
 const cart = {};
+let customizingMenuItem = null;
 const $ = id => document.getElementById(id);
 const money = n => CURRENCY + n.toFixed(2);
+const CUSTOM_PRICE = { alternativeMilk:20, extraShot:30, syrup:15, whippedCream:15 };
 
-function controls(m){
-  const q = cart[m.id] || 0;
-  return q
-    ? `<span class="stepper"><button class="step" data-chg="-1" data-id="${m.id}" aria-label="Remove one ${m.name}">−</button><span aria-live="polite">${q}</span><button class="step" data-chg="1" data-id="${m.id}" aria-label="Add one ${m.name}">+</button></span>`
-    : `<button class="add" data-chg="1" data-id="${m.id}" aria-label="Add ${m.name}">Add</button>`;
+function isDrink(m){ return m.cat !== "Bakery"; }
+function cartKey(id, options){
+  return options ? id + "::" + JSON.stringify(options) : id;
 }
-
+function drinkOptions(){
+  return {
+    milk:$("drinkMilk").value,
+    espresso:$("drinkShot").value,
+    syrup:$("drinkSyrup").value,
+    sugar:$("drinkSugar").value,
+    whippedCream:$("drinkCream").checked
+  };
+}
+function optionPrice(options){
+  let extra = 0;
+  if (["Oat milk","Almond milk","Soy milk"].includes(options.milk)) extra += CUSTOM_PRICE.alternativeMilk;
+  if (options.espresso === "Extra shot") extra += CUSTOM_PRICE.extraShot;
+  if (options.syrup !== "None") extra += CUSTOM_PRICE.syrup;
+  if (options.whippedCream) extra += CUSTOM_PRICE.whippedCream;
+  return extra;
+}
+function optionSummary(options){
+  return [
+    "Milk: " + options.milk,
+    "Espresso: " + options.espresso,
+    "Syrup: " + options.syrup,
+    "Sugar: " + options.sugar,
+    "Whipped cream: " + (options.whippedCream ? "Yes" : "No")
+  ].join(" · ");
+}
+function controls(m){
+  if (isDrink(m)) {
+    const count = Object.values(cart).filter(line => line.menuId === m.id).reduce((sum,line) => sum + line.qty,0);
+    return `<div class="ctl"><span class="price">${money(m.price)}</span><button class="add" data-customize="${m.id}">Customize${count ? ` · ${count} in order` : ""}</button></div>`;
+  }
+  const q = cart[m.id]?.qty || 0;
+  return `<div class="ctl"><span class="price">${money(m.price)}</span>${q
+    ? `<span class="stepper"><button class="step" data-chg="-1" data-id="${m.id}" aria-label="Remove one ${m.name}">−</button><span aria-live="polite">${q}</span><button class="step" data-chg="1" data-id="${m.id}" aria-label="Add one ${m.name}">+</button></span>`
+    : `<button class="add" data-chg="1" data-id="${m.id}" aria-label="Add ${m.name}">Add</button>`}</div>`;
+}
 function renderMenu(){
   let html = "", last = "";
   MENU.forEach(m => {
     if (m.cat !== last){ html += `<h3 class="cat"><svg class="ci" aria-hidden="true"><use href="#${ICONS[m.cat]||"i-hot"}"/></svg>${m.cat}</h3>`; last = m.cat; }
     html += `<div class="item"><h4 class="item-name"><span class="item-icon" aria-hidden="true">${ITEM_ICONS[m.id]||"☕"}</span><span>${m.name}</span></h4>${m.desc?`<small>${m.desc}</small>`:""}
-      <div class="ctl"><span class="price">${money(m.price)}</span>${controls(m)}</div></div>`;
+      ${controls(m)}</div>`;
   });
   $("menu").innerHTML = html;
 }
-
-document.addEventListener("click", e => {
-  const b = e.target.closest("[data-chg]");
-  if (!b) return;
-  const id = b.dataset.id;
-  cart[id] = (cart[id] || 0) + Number(b.dataset.chg);
-  if (cart[id] <= 0) delete cart[id];
-  render();
-  const again = document.querySelector(`#menu [data-id="${id}"]`);
-  if (again) again.focus();
+function openCustomizer(menuId){
+  customizingMenuItem = MENU.find(m => m.id === menuId);
+  if (!customizingMenuItem) return;
+  $("customizeProduct").textContent = customizingMenuItem.name + " · Base price " + money(customizingMenuItem.price);
+  $("drinkMilk").value = "Whole milk";
+  $("drinkShot").value = "Double";
+  $("drinkSyrup").value = "None";
+  $("drinkSugar").value = "1 portion";
+  $("drinkCream").checked = false;
+  updateCustomizePrice();
+  const overlay = $("customizeDialog");
+  overlay.classList.add("is-open");
+  overlay.setAttribute("aria-hidden","false");
+  $("customizeClose").focus();
+}
+function closeCustomizer(){
+  const overlay = $("customizeDialog");
+  overlay.classList.remove("is-open");
+  overlay.setAttribute("aria-hidden","true");
+  customizingMenuItem = null;
+}
+function updateCustomizePrice(){
+  if (!customizingMenuItem) return;
+  const extra = optionPrice(drinkOptions());
+  $("customizePrice").textContent = money(customizingMenuItem.price + extra);
+}
+["drinkMilk","drinkShot","drinkSyrup","drinkSugar","drinkCream"].forEach(id => {
+  $(id).addEventListener("change",updateCustomizePrice);
 });
-
+$("customizeClose").addEventListener("click",closeCustomizer);
+$("customizeDialog").addEventListener("click",e => {
+  if (e.target === $("customizeDialog")) closeCustomizer();
+});
+$("addCustomized").addEventListener("click",() => {
+  if (!customizingMenuItem) return;
+  const options = drinkOptions();
+  const key = cartKey(customizingMenuItem.id,options);
+  if (!cart[key]) {
+    cart[key] = {
+      menuId:customizingMenuItem.id,
+      name:customizingMenuItem.name,
+      qty:0,
+      options,
+      unitPrice:customizingMenuItem.price + optionPrice(options)
+    };
+  }
+  cart[key].qty++;
+  closeCustomizer();
+  render();
+});
+document.addEventListener("keydown",e => {
+  if (e.key === "Escape" && $("customizeDialog").classList.contains("is-open")) closeCustomizer();
+});
+document.addEventListener("click", e => {
+  const customizeButton = e.target.closest("[data-customize]");
+  if (customizeButton) {
+    openCustomizer(customizeButton.dataset.customize);
+    return;
+  }
+  const changeButton = e.target.closest("[data-chg]");
+  if (changeButton) {
+    const id = changeButton.dataset.id;
+    if (!cart[id]) cart[id] = {menuId:id,name:MENU.find(m=>m.id===id).name,qty:0,options:null,unitPrice:MENU.find(m=>m.id===id).price};
+    cart[id].qty += Number(changeButton.dataset.chg);
+    if (cart[id].qty <= 0) delete cart[id];
+    render();
+    return;
+  }
+  const cartButton = e.target.closest("[data-cart-chg]");
+  if (cartButton) {
+    const key = cartButton.dataset.key;
+    if (!cart[key]) return;
+    cart[key].qty += Number(cartButton.dataset.cartChg);
+    if (cart[key].qty <= 0) delete cart[key];
+    render();
+  }
+});
 function render(){
-  const rows = MENU.filter(m => cart[m.id]);
-  const count = rows.reduce((s, m) => s + cart[m.id], 0);
-  const subtotal = rows.reduce((s, m) => s + m.price * cart[m.id], 0);
+  const rows = Object.entries(cart);
+  const count = rows.reduce((sum,[,line]) => sum + line.qty,0);
+  const subtotal = rows.reduce((sum,[,line]) => sum + line.unitPrice * line.qty,0);
   const total = subtotal + (rows.length ? DELIVERY_FEE : 0);
   renderMenu();
   $("cart").innerHTML = rows.length
-    ? rows.map(m => `<div class="line"><span>${cart[m.id]} × ${m.name}</span><span>${money(m.price * cart[m.id])}</span></div>`).join("")
+    ? rows.map(([key,line]) => `<div class="line cart-line"><span class="cart-line-copy">${line.qty} × ${line.name}${line.options ? `<small>${optionSummary(line.options)}</small>` : ""}</span><span class="cart-line-price">${money(line.unitPrice * line.qty)}<span class="stepper"><button class="step" data-cart-chg="-1" data-key="${key.replace(/"/g,"&quot;")}" aria-label="Remove one ${line.name}">−</button><button class="step" data-cart-chg="1" data-key="${key.replace(/"/g,"&quot;")}" aria-label="Add one ${line.name}">+</button></span></span></div>`).join("")
       + `<div class="line"><span>Subtotal</span><span>${money(subtotal)}</span></div>`
       + `<div class="line"><span>Delivery fee</span><span>${money(DELIVERY_FEE)}</span></div>`
       + `<div class="total"><span>Total</span><span class="serif">${money(total)}</span></div>`
-    : `<p class="empty">Nothing yet. Add a drink from the menu.</p>`;
+    : `<p class="empty">Nothing yet. Add a drink or something from the bakery.</p>`;
   $("send").disabled = !rows.length;
-  $("bar").classList.toggle("show", count > 0);
+  $("bar").classList.toggle("show",count > 0);
   $("barText").textContent = `${count} ${count === 1 ? "item" : "items"} · ${money(total)}`;
 }
-
 $("form").addEventListener("submit", async e => {
   e.preventDefault();
-  const items = MENU.filter(m => cart[m.id]).map(m => ({name:m.name, qty:cart[m.id], price:m.price}));
+  const items = Object.values(cart).map(line => ({
+    name:line.options ? `${line.name} (${optionSummary(line.options)})` : line.name,
+    qty:line.qty,
+    price:line.unitPrice,
+    options:line.options || null
+  }));
   if (!items.length) return;
   const btn = $("send"), msg = $("msg");
   btn.disabled = true; msg.textContent = "Sending your order…";
