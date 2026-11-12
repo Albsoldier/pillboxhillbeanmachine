@@ -91,6 +91,14 @@ input:focus,textarea:focus{border-color:var(--caramel);outline:none;box-shadow:0
 .hp{position:absolute;left:-9999px}
 .go{margin-top:24px}
 #msg{margin-top:14px;font-size:.95rem}
+.method{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:22px 0 4px;padding:5px;border:1px solid var(--line);border-radius:14px;background:var(--black)}
+.method legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.method input{position:absolute;opacity:0;width:1px;height:1px}
+.method label{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:10px;color:var(--mute);font-size:.95rem;cursor:pointer;transition:background .15s,color .15s}
+.method label small{font-size:.72rem;font-weight:500}
+.method input:checked+label{background:var(--caramel);color:var(--on-caramel)}
+.method input:focus-visible+label{outline:3px solid var(--caramel);outline-offset:2px}
+#addressWrap[hidden]{display:none}
 .order-confirm{padding:16px;border:1px solid rgba(168,207,146,.4);border-radius:14px;background:rgba(141,168,121,.1);text-align:center}
 .order-confirm small{display:block;color:var(--mute);font-size:.72rem;font-weight:800;letter-spacing:.16em}
 .order-confirm strong{display:block;margin:4px 0 6px;font:700 1.9rem/1.1 "Bricolage Grotesque","Hanken Grotesk",sans-serif;letter-spacing:.02em;color:#a8cf92}
@@ -431,7 +439,7 @@ footer a:hover{border-color:var(--caramel)}
   <div class="hero-body" id="top">
     <div class="hero-copy">
       <h1 class="serif">Coffee, made fast and made right.</h1>
-      <p>Order ahead and it will be ready when you walk in.</p>
+      <p>Order ahead, then pick it up or have it delivered.</p>
       <a class="btn" href="#order">Start your order</a>
     </div>
     <div class="hero-showcase" aria-label="Featured coffee and shop highlights">
@@ -474,6 +482,15 @@ footer a:hover{border-color:var(--caramel)}
     <p class="shop-status panel-status" data-shop-status></p>
     <div id="cart" aria-live="polite"></div>
     <form id="form">
+      <fieldset class="method">
+        <legend>How do you want your order?</legend>
+        <input type="radio" name="method" id="mPickup" value="pickup" checked><label for="mPickup">Pickup<small>Free</small></label>
+        <input type="radio" name="method" id="mDelivery" value="delivery"><label for="mDelivery">Delivery<small id="deliveryPriceLabel"></small></label>
+      </fieldset>
+      <div id="addressWrap" hidden>
+        <label for="address">Delivery address</label>
+        <input id="address" maxlength="120" placeholder="Street and number, e.g. 12 Alta Street">
+      </div>
       <label for="name">Your name</label>
       <input id="name" required maxlength="60" autocomplete="name">
       <label for="contact">Phone or Discord name (optional)</label>
@@ -612,7 +629,7 @@ footer a:hover{border-color:var(--caramel)}
     </form>
   </div>
 </section>
-<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead, pay at pickup. · <a href="#jobs">We're hiring</a></span></footer>
+<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead for pickup or delivery. · <a href="#jobs">We're hiring</a></span></footer>
 
 <div class="bar" id="bar"><span id="barText"></span><a href="#checkout">Review order</a></div>
 
@@ -621,7 +638,7 @@ footer a:hover{border-color:var(--caramel)}
 // Your Cloudflare Worker URL (see setup steps). Never put the Discord webhook URL here.
 const ORDER_ENDPOINT = "https://pillboxhillbeanmachine.froginwater123.workers.dev";
 const CURRENCY = "$";
-const DELIVERY_FEE = 250.00; // delivery fee shown to customers and added to every order
+const DELIVERY_FEE = 250.00; // only added when the customer chooses delivery; pickup is free
 const MENU = [
   {cat:"Hot drinks", id:"i1", name:"Black coffee", desc:"", price:100.00},
   {cat:"Hot drinks", id:"i2", name:"Cappuccino", desc:"", price:100.00},
@@ -790,16 +807,22 @@ document.addEventListener("click", e => {
     render();
   }
 });
+function isDelivery(){ return $("mDelivery").checked; }
+document.querySelectorAll('input[name="method"]').forEach(r => r.addEventListener("change", render));
 function render(){
   const rows = Object.entries(cart);
   const count = rows.reduce((sum,[,line]) => sum + line.qty,0);
   const subtotal = rows.reduce((sum,[,line]) => sum + line.unitPrice * line.qty,0);
-  const total = subtotal + (rows.length ? DELIVERY_FEE : 0);
+  const delivering = isDelivery();
+  const fee = rows.length && delivering ? DELIVERY_FEE : 0;
+  const total = subtotal + fee;
+  $("addressWrap").hidden = !delivering;
+  $("address").required = delivering;
   renderMenu();
   $("cart").innerHTML = rows.length
     ? rows.map(([key,line]) => `<div class="line cart-line"><span class="cart-line-copy">${line.qty} × ${line.name}${line.options ? `<small>${optionSummary(line.options)}</small>` : ""}</span><span class="cart-line-price">${money(line.unitPrice * line.qty)}<span class="stepper"><button class="step" data-cart-chg="-1" data-key="${key.replace(/"/g,"&quot;")}" aria-label="Remove one ${line.name}">−</button><button class="step" data-cart-chg="1" data-key="${key.replace(/"/g,"&quot;")}" aria-label="Add one ${line.name}">+</button></span></span></div>`).join("")
       + `<div class="line"><span>Subtotal</span><span>${money(subtotal)}</span></div>`
-      + `<div class="line"><span>Delivery fee</span><span>${money(DELIVERY_FEE)}</span></div>`
+      + (delivering ? `<div class="line"><span>Delivery fee</span><span>${money(DELIVERY_FEE)}</span></div>` : `<div class="line"><span>Pickup</span><span>Free</span></div>`)
       + `<div class="total"><span>Total</span><span class="serif">${money(total)}</span></div>`
     : `<p class="empty">Nothing yet. Add a drink or something from the bakery.</p>`;
   $("send").disabled = !rows.length;
@@ -828,6 +851,7 @@ $("form").addEventListener("submit", async e => {
   }));
   if (!items.length) return;
   const btn = $("send"), msg = $("msg");
+  const delivering = isDelivery();
   btn.disabled = true; msg.textContent = "Sending your order…";
   try {
     const res = await fetch(ORDER_ENDPOINT, {
@@ -836,7 +860,10 @@ $("form").addEventListener("submit", async e => {
       body: JSON.stringify({
         orderNumber,
         name:$("name").value.trim(), contact:$("contact").value.trim(),
-        note:$("note").value.trim(), website:$("website").value, delivery:DELIVERY_FEE, items
+        note:$("note").value.trim(), website:$("website").value,
+        method:delivering ? "delivery" : "pickup",
+        address:delivering ? $("address").value.trim() : "",
+        delivery:delivering ? DELIVERY_FEE : 0, items
       })
     });
     if (!res.ok) throw new Error();
@@ -846,14 +873,15 @@ $("form").addEventListener("submit", async e => {
     pendingOrderNumber = null;
     Object.keys(cart).forEach(k => delete cart[k]);
     $("form").reset(); render();
-    msg.innerHTML = `<div class="order-confirm"><small>YOUR ORDER NUMBER</small><strong></strong><p>Order sent. We're making it now. Mention this number when you collect it.</p></div>`;
+    msg.innerHTML = `<div class="order-confirm"><small>YOUR ORDER NUMBER</small><strong></strong><p>${delivering ? "Order sent. We're making it now and will bring it to your address." : "Order sent. We're making it now. Mention this number when you collect it."}</p></div>`;
     msg.querySelector("strong").textContent = "#" + confirmed;
   } catch {
     msg.textContent = "The order didn't go through. Try again, or order at the counter.";
     btn.disabled = false;
   }
 });
-$("feeNote").textContent = "Delivery fee: " + money(DELIVERY_FEE) + " per order";
+$("feeNote").textContent = "Pickup is free · Delivery " + money(DELIVERY_FEE) + " per order";
+$("deliveryPriceLabel").textContent = "+" + money(DELIVERY_FEE);
 render();
 // Our History panel: opens independently of the menu and checkout.
 (function(){
