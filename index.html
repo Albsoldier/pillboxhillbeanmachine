@@ -91,6 +91,10 @@ input:focus,textarea:focus{border-color:var(--caramel);outline:none;box-shadow:0
 .hp{position:absolute;left:-9999px}
 .go{margin-top:24px}
 #msg{margin-top:14px;font-size:.95rem}
+.order-confirm{padding:16px;border:1px solid rgba(168,207,146,.4);border-radius:14px;background:rgba(141,168,121,.1);text-align:center}
+.order-confirm small{display:block;color:var(--mute);font-size:.72rem;font-weight:800;letter-spacing:.16em}
+.order-confirm strong{display:block;margin:4px 0 6px;font:700 1.9rem/1.1 "Bricolage Grotesque","Hanken Grotesk",sans-serif;letter-spacing:.02em;color:#a8cf92}
+.order-confirm p{margin:0;color:#d9cbbd;font-size:.88rem}
 .empty{color:var(--mute);margin:4px 0 0;font-size:.95rem}
 
 footer{border-top:1px solid var(--line);color:var(--mute);padding:40px clamp(20px,5vw,64px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
@@ -370,6 +374,42 @@ h3.cat{display:flex;align-items:center;gap:8px}
 @media(max-width:640px){.hero-nav-actions .shop-status .status-detail{display:none}.hero-nav-actions .shop-status{padding:7px 10px;font-size:.75rem}}
 @media(prefers-reduced-motion:reduce){.shop-status::before{animation:none!important}}
 </style>
+
+<style id="hiring-styles">
+.hiring{width:min(1440px,calc(100% - 32px));margin:clamp(22px,4vw,48px) auto;padding:clamp(24px,4.5vw,64px);background:radial-gradient(ellipse at 8% 100%,rgba(196,138,90,.12),transparent 40%),linear-gradient(145deg,#17110d 0%,#100d0b 62%,#17100c 100%);border:1px solid rgba(196,138,90,.23);border-radius:30px;box-shadow:0 24px 80px rgba(0,0,0,.22),inset 0 1px rgba(255,235,210,.035)}
+.hiring-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid rgba(196,138,90,.22)}
+.hiring-kicker{margin:0 0 13px;color:var(--caramel);font-size:.68rem;font-weight:800;letter-spacing:.2em}
+.hiring h2{font-size:clamp(3rem,6vw,5.2rem);line-height:.92;letter-spacing:-.055em;margin:0}
+.hiring h2 .dot{color:var(--caramel)}
+.hiring-intro{max-width:440px;margin:0;color:#b9a99a}
+.hiring-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);gap:clamp(28px,4.5vw,68px);align-items:start;margin-top:28px}
+.job-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.job{position:relative;padding:20px;border:1px solid rgba(255,235,210,.055);border-radius:15px;background:linear-gradient(110deg,rgba(255,255,255,.035),rgba(255,255,255,.012));transition:background .2s,border-color .2s,transform .2s}
+.job:hover{background:linear-gradient(110deg,rgba(196,138,90,.11),rgba(255,255,255,.025));border-color:rgba(196,138,90,.28);transform:translateY(-1px)}
+.job-icon{display:grid;place-items:center;width:40px;height:40px;margin-bottom:14px;border:1px solid rgba(196,138,90,.2);border-radius:12px;background:rgba(196,138,90,.08);font-size:20px}
+.job h3{margin:0 0 6px;font-size:1.15rem}
+.job p{margin:0 0 14px;color:#9e9083;font-size:.9rem}
+.job-tag{display:inline-block;padding:4px 10px;border:1px solid rgba(196,138,90,.35);border-radius:999px;color:#d6b18e;font-size:.7rem;font-weight:700;letter-spacing:.06em}
+.job .apply-link{position:absolute;top:18px;right:18px;padding:6px 13px;border:1.5px solid #6a5140;border-radius:999px;background:transparent;color:var(--text);font:700 .8rem "Hanken Grotesk",sans-serif;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.job .apply-link:hover{background:var(--caramel);border-color:var(--caramel);color:var(--on-caramel)}
+.perks{display:flex;flex-wrap:wrap;gap:8px 22px;margin:22px 0 0;padding:0;list-style:none;color:#d9cbbd;font-size:.92rem}
+.perks li::before{content:"✳";margin-right:8px;color:var(--caramel)}
+.apply-form{background:linear-gradient(155deg,#21170f,#15100d 72%);border:1px solid rgba(196,138,90,.25);border-radius:22px;padding:26px;box-shadow:0 18px 48px rgba(0,0,0,.25),inset 0 1px rgba(255,235,210,.045)}
+.apply-form h3{margin:0 0 4px;font-size:1.5rem}
+.apply-form h3:after{content:"";display:block;width:38px;height:2px;margin-top:11px;background:var(--caramel)}
+.apply-form>p{margin:12px 0 0;color:var(--mute);font-size:.92rem}
+.apply-form select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--black);color:var(--text);font:inherit;font-size:1rem}
+.apply-form select:focus{border-color:var(--caramel);outline:none;box-shadow:0 0 0 3px rgba(196,138,90,.25)}
+.apply-form textarea{min-height:104px;resize:vertical}
+.apply-row{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.hiring-closed{margin:0;padding:22px;border:1px dashed rgba(196,138,90,.3);border-radius:15px;color:var(--mute)}
+#appMsg{margin-top:14px;font-size:.95rem}
+footer a{color:var(--caramel);text-decoration:none;border-bottom:1px solid rgba(196,138,90,.35)}
+footer a:hover{border-color:var(--caramel)}
+@media(max-width:860px){.hiring-body{grid-template-columns:1fr}.hiring{width:calc(100% - 20px);border-radius:23px;padding:26px 18px}}
+@media(max-width:480px){.hiring h2{font-size:3rem}.job-list{grid-template-columns:1fr}.apply-row{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.job{transition:none!important}}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -505,6 +545,41 @@ h3.cat{display:flex;align-items:center;gap:8px}
   </section>
 </div>
 
+<section class="hiring" id="jobs" aria-labelledby="jobs-h">
+  <div class="hiring-head">
+    <div>
+      <p class="hiring-kicker">JOIN THE TEAM</p>
+      <h2 class="serif" id="jobs-h">We're hiring<span class="dot">.</span></h2>
+    </div>
+    <p class="hiring-intro">Like coffee, people and a busy shift? Come work at Pillbox Hill Bean Machine. No experience needed, we'll teach you everything.</p>
+  </div>
+  <div class="hiring-body">
+    <div>
+      <div class="job-list" id="jobList"></div>
+      <ul class="perks" id="perkList"></ul>
+    </div>
+    <form class="apply-form" id="applyForm" autocomplete="off">
+      <h3 class="serif">Apply now</h3>
+      <p>Fill this in and it goes straight to the management team. We'll contact you on Discord.</p>
+      <label for="appRole">Position</label>
+      <select id="appRole" required></select>
+      <div class="apply-row">
+        <div><label for="appName">Character name</label><input id="appName" maxlength="60" required></div>
+        <div><label for="appPhone">Phone number</label><input id="appPhone" maxlength="30"></div>
+      </div>
+      <label for="appDiscord">Discord username</label>
+      <input id="appDiscord" maxlength="40" required placeholder="e.g. coffeelover">
+      <label for="appAvail">When can you work?</label>
+      <input id="appAvail" maxlength="120" required placeholder="e.g. weekday evenings, Saturdays">
+      <label for="appWhy">Tell us about yourself</label>
+      <textarea id="appWhy" maxlength="800" required placeholder="Why do you want to work here? Any experience?"></textarea>
+      <input class="hp" id="appWebsite" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn solid go" id="appSend" type="submit">Send application</button>
+      <div id="appMsg" role="status"></div>
+    </form>
+  </div>
+</section>
+
 <section class="reviews" id="reviews" aria-labelledby="reviews-h">
   <div class="reviews-head">
     <div>
@@ -537,7 +612,7 @@ h3.cat{display:flex;align-items:center;gap:8px}
     </form>
   </div>
 </section>
-<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead, pay at pickup.</span></footer>
+<footer><span class="serif">Pillbox Hill Bean Machine</span><span>Order ahead, pay at pickup. · <a href="#jobs">We're hiring</a></span></footer>
 
 <div class="bar" id="bar"><span id="barText"></span><a href="#checkout">Review order</a></div>
 
@@ -731,8 +806,20 @@ function render(){
   $("bar").classList.toggle("show",count > 0);
   $("barText").textContent = `${count} ${count === 1 ? "item" : "items"} · ${money(total)}`;
 }
+// Order numbers look like BM-1112-7K4: "BM", the month+day, then 3 random characters.
+// Letters that are easy to confuse (0/O, 1/I/L) are left out so customers can read it out loud.
+let pendingOrderNumber = null; // kept if sending fails, so a retry reuses the same number
+function newOrderNumber(){
+  const chars = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+  const d = new Date();
+  const mmdd = String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0");
+  const rand = crypto.getRandomValues(new Uint32Array(3));
+  return "BM-" + mmdd + "-" + Array.from(rand, n => chars[n % chars.length]).join("");
+}
 $("form").addEventListener("submit", async e => {
   e.preventDefault();
+  if (!pendingOrderNumber) pendingOrderNumber = newOrderNumber();
+  const orderNumber = pendingOrderNumber;
   const items = Object.values(cart).map(line => ({
     name:line.options ? `${line.name} (${optionSummary(line.options)})` : line.name,
     qty:line.qty,
@@ -747,14 +834,20 @@ $("form").addEventListener("submit", async e => {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
+        orderNumber,
         name:$("name").value.trim(), contact:$("contact").value.trim(),
         note:$("note").value.trim(), website:$("website").value, delivery:DELIVERY_FEE, items
       })
     });
     if (!res.ok) throw new Error();
+    // If the Worker sends back its own order number, use that one instead.
+    let confirmed = orderNumber;
+    try { const data = await res.clone().json(); if (data && data.orderNumber) confirmed = String(data.orderNumber); } catch {}
+    pendingOrderNumber = null;
     Object.keys(cart).forEach(k => delete cart[k]);
     $("form").reset(); render();
-    msg.textContent = "Order sent. We're making it now.";
+    msg.innerHTML = `<div class="order-confirm"><small>YOUR ORDER NUMBER</small><strong></strong><p>Order sent. We're making it now. Mention this number when you collect it.</p></div>`;
+    msg.querySelector("strong").textContent = "#" + confirmed;
   } catch {
     msg.textContent = "The order didn't go through. Try again, or order at the counter.";
     btn.disabled = false;
@@ -923,6 +1016,62 @@ const SHOP = {
 
 
 <script>
+// ====== HIRING ======
+// Set HIRING_OPEN to false to hide the form and show "not hiring right now".
+const HIRING_OPEN = true;
+// Add, remove or edit positions here. tag is the small label on each card.
+const JOBS = [
+  {icon:"☕", title:"Barista", desc:"Make the drinks, run the counter and keep the regulars happy.", tag:"Part-time"},
+  {icon:"🥐", title:"Baker", desc:"Keep the shelves stocked with muffins, cookies and sandwiches.", tag:"Part-time"},
+  {icon:"🛵", title:"Delivery driver", desc:"Get orders across Los Santos while they're still hot.", tag:"Flexible hours"},
+  {icon:"📋", title:"Shift supervisor", desc:"Lead the team on shift and make sure every order goes out right.", tag:"Experience preferred"}
+];
+const PERKS = ["Free coffee on shift", "Tips are yours to keep", "Flexible hours", "Friendly team"];
+// ====================
+(function(){
+  const g = id => document.getElementById(id);
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  g("perkList").innerHTML = PERKS.map(p => `<li>${esc(p)}</li>`).join("");
+  if (!HIRING_OPEN || !JOBS.length){
+    g("jobList").innerHTML = `<p class="hiring-closed">We're not hiring right now, but check back soon.</p>`;
+    g("applyForm").hidden = true;
+    return;
+  }
+  g("jobList").innerHTML = JOBS.map((j,i) => `<article class="job"><span class="job-icon" aria-hidden="true">${j.icon}</span><h3>${esc(j.title)}</h3><p>${esc(j.desc)}</p><span class="job-tag">${esc(j.tag)}</span><button type="button" class="apply-link" data-job="${i}" aria-label="Apply for ${esc(j.title)}">Apply</button></article>`).join("");
+  g("appRole").innerHTML = `<option value="">Choose a position</option>` + JOBS.map(j => `<option>${esc(j.title)}</option>`).join("");
+  // "Apply" on a card picks that position and jumps to the form.
+  g("jobList").addEventListener("click", e => {
+    const b = e.target.closest("[data-job]");
+    if (!b) return;
+    g("appRole").value = JOBS[b.dataset.job].title;
+    g("applyForm").scrollIntoView({behavior:"smooth", block:"start"});
+    g("appName").focus({preventScroll:true});
+  });
+  g("applyForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = g("appMsg"), btn = g("appSend");
+    btn.disabled = true; msg.textContent = "Sending your application…";
+    try {
+      const res = await fetch(ORDER_ENDPOINT, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          type:"application",
+          role:g("appRole").value, name:g("appName").value.trim(), phone:g("appPhone").value.trim(),
+          discord:g("appDiscord").value.trim(), availability:g("appAvail").value.trim(),
+          about:g("appWhy").value.trim(), website:g("appWebsite").value
+        })
+      });
+      if (!res.ok) throw new Error();
+      g("applyForm").reset();
+      msg.textContent = "Thanks! Your application was sent. We'll message you on Discord.";
+    } catch {
+      msg.textContent = "The application didn't go through. Please try again.";
+    }
+    btn.disabled = false;
+  });
+})();
+
 // ====== REVIEWS SHOWN ON THE SITE ======
 // New reviews arrive in your Discord. Copy the ones you want to show here.
 // rating is 1 to 5. Leave the list empty to show a "no reviews yet" message.
