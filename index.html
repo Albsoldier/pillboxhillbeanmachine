@@ -91,6 +91,10 @@ input:focus,textarea:focus{border-color:var(--caramel);outline:none;box-shadow:0
 .hp{position:absolute;left:-9999px}
 .go{margin-top:24px}
 #msg{margin-top:14px;font-size:.95rem}
+.order-confirm{padding:16px;border:1px solid rgba(168,207,146,.4);border-radius:14px;background:rgba(141,168,121,.1);text-align:center}
+.order-confirm small{display:block;color:var(--mute);font-size:.72rem;font-weight:800;letter-spacing:.16em}
+.order-confirm strong{display:block;margin:4px 0 6px;font:700 1.9rem/1.1 "Bricolage Grotesque","Hanken Grotesk",sans-serif;letter-spacing:.02em;color:#a8cf92}
+.order-confirm p{margin:0;color:#d9cbbd;font-size:.88rem}
 .empty{color:var(--mute);margin:4px 0 0;font-size:.95rem}
 
 footer{border-top:1px solid var(--line);color:var(--mute);padding:40px clamp(20px,5vw,64px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
@@ -729,8 +733,20 @@ function render(){
   $("bar").classList.toggle("show",count > 0);
   $("barText").textContent = `${count} ${count === 1 ? "item" : "items"} · ${money(total)}`;
 }
+// Order numbers look like BM-1112-7K4: "BM", the month+day, then 3 random characters.
+// Letters that are easy to confuse (0/O, 1/I/L) are left out so customers can read it out loud.
+let pendingOrderNumber = null; // kept if sending fails, so a retry reuses the same number
+function newOrderNumber(){
+  const chars = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+  const d = new Date();
+  const mmdd = String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0");
+  const rand = crypto.getRandomValues(new Uint32Array(3));
+  return "BM-" + mmdd + "-" + Array.from(rand, n => chars[n % chars.length]).join("");
+}
 $("form").addEventListener("submit", async e => {
   e.preventDefault();
+  if (!pendingOrderNumber) pendingOrderNumber = newOrderNumber();
+  const orderNumber = pendingOrderNumber;
   const items = Object.values(cart).map(line => ({
     name:line.options ? `${line.name} (${optionSummary(line.options)})` : line.name,
     qty:line.qty,
@@ -745,14 +761,20 @@ $("form").addEventListener("submit", async e => {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
+        orderNumber,
         name:$("name").value.trim(), contact:$("contact").value.trim(),
         note:$("note").value.trim(), website:$("website").value, delivery:DELIVERY_FEE, items
       })
     });
     if (!res.ok) throw new Error();
+    // If the Worker sends back its own order number, use that one instead.
+    let confirmed = orderNumber;
+    try { const data = await res.clone().json(); if (data && data.orderNumber) confirmed = String(data.orderNumber); } catch {}
+    pendingOrderNumber = null;
     Object.keys(cart).forEach(k => delete cart[k]);
     $("form").reset(); render();
-    msg.textContent = "Order sent. We're making it now.";
+    msg.innerHTML = `<div class="order-confirm"><small>YOUR ORDER NUMBER</small><strong></strong><p>Order sent. We're making it now. Mention this number when you collect it.</p></div>`;
+    msg.querySelector("strong").textContent = "#" + confirmed;
   } catch {
     msg.textContent = "The order didn't go through. Try again, or order at the counter.";
     btn.disabled = false;
