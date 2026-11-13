@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Albsoldier · Web Developer</title>
+<meta name="description" content="Portfolio of Albsoldier, a web developer building fast, friendly websites.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ====== EDIT ME: colors ====== */
+  :root {
+    --bg: #fbfaf8;
+    --surface: #ffffff;
+    --text: #1c1b1a;
+    --muted: #6b6762;
+    --border: #e7e3dd;
+    --accent: #c2410c;
+    --accent-soft: #fdeee6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141312;
+      --surface: #1d1c1a;
+      --text: #f2efea;
+      --muted: #a39e97;
+      --border: #2f2d2a;
+      --accent: #fb923c;
+      --accent-soft: #3a2416;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141312;
+    --surface: #1d1c1a;
+    --text: #f2efea;
+    --muted: #a39e97;
+    --border: #2f2d2a;
+    --accent: #fb923c;
+    --accent-soft: #3a2416;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
+  .logo { font-weight: 700; color: var(--text); }
+  .logo span { color: var(--accent); }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; align-items: center; }
+  nav ul a { color: var(--muted); font-size: 15px; }
+  nav ul a:hover { color: var(--text); text-decoration: none; }
+  .theme-btn {
+    background: none; border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 16px;
+  }
+
+  /* Hero */
+  header.hero { padding: 96px 0 72px; }
+  .hero-inner { display: flex; gap: 32px; align-items: center; }
+  .avatar {
+    width: 120px; height: 120px; border-radius: 50%; flex-shrink: 0;
+    border: 3px solid var(--accent-soft); background: var(--surface);
+  }
+  .eyebrow { color: var(--accent); font-size: 14px; font-weight: 500; margin: 0 0 8px; }
+  h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 560px; margin: 0 0 28px; }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 10px 18px; border-radius: 10px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--border); color: var(--text); background: var(--surface);
+  }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); }
+
+  /* Sections */
+  section { padding: 64px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 28px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 32px; }
+
+  /* Featured project */
+  .featured {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 0;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+  }
+  .featured img { width: 100%; height: 100%; object-fit: cover; min-height: 260px; display: block; }
+  .featured .body { padding: 28px; }
+  .featured h3 { margin: 0 0 8px; font-size: 22px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+  .tag {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); font-weight: 500;
+  }
+  .featured ul { padding-left: 18px; margin: 0 0 20px; color: var(--muted); }
+  .featured li { margin-bottom: 4px; }
+
+  /* Repo grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+    display: flex; flex-direction: column; gap: 8px; color: var(--text); transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--accent); text-decoration: none; }
+  .card h4 { margin: 0; font-size: 16px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; flex: 1; }
+  .card .meta { font-size: 13px; color: var(--muted); display: flex; gap: 14px; }
+  .empty { color: var(--muted); font-size: 14px; }
+
+  /* Skills */
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .skill-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .skill-box h3 { margin: 0 0 10px; font-size: 15px; }
+  .skill-box ul { list-style: none; margin: 0; padding: 0; color: var(--muted); font-size: 14px; }
+  .skill-box li { padding: 3px 0; }
+
+  /* About + contact */
+  .about p { max-width: 640px; color: var(--muted); }
+  .contact { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  footer { padding: 32px 0; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 720px) {
+    nav ul li.hide-sm { display: none; }
+    header.hero { padding: 56px 0 48px; }
+    .hero-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .avatar { width: 88px; height: 88px; }
+    .featured { grid-template-columns: 1fr; }
+    .featured img { min-height: 180px; max-height: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo mono">albsoldier<span>.dev</span></a>
+    <ul>
+      <li class="hide-sm"><a href="#work">Work</a></li>
+      <li class="hide-sm"><a href="#skills">Skills</a></li>
+      <li class="hide-sm"><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">◐</button></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ====== EDIT ME: intro ====== -->
+<header class="hero">
+  <div class="wrap hero-inner">
+    <img class="avatar" src="https://github.com/Albsoldier.png?size=240" alt="Albsoldier's GitHub avatar">
+    <div>
+      <p class="eyebrow mono">Hi, I'm Albsoldier 👋</p>
+      <h1>I build fast, friendly websites for real businesses.</h1>
+      <p class="lead">Web developer focused on clean front-ends, simple checkouts, and small serverless back-ends that just work.</p>
+      <div class="btns">
+        <a class="btn primary" href="#work">See my work</a>
+        <a class="btn" href="https://github.com/Albsoldier" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="work">
+    <div class="wrap">
+      <h2>Featured project</h2>
+      <p class="sub">A full ordering website for a coffee shop.</p>
+
+      <article class="featured">
+        <!-- Image is loaded from the coffee shop repo. Swap for your own screenshot if you like. -->
+        <img src="https://raw.githubusercontent.com/Albsoldier/pillboxhillbeanmachine/main/images/hero.jpg" alt="Pillbox Hill Bean Machine coffee shop website">
+        <div class="body">
+          <h3>Pillbox Hill Bean Machine</h3>
+          <p style="margin:0;color:var(--muted)">A coffee shop website where customers browse the menu, customize drinks and place orders, all sent straight to staff on Discord.</p>
+          <div class="tag-row">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Cloudflare Workers</span><span class="tag">Discord API</span>
+          </div>
+          <ul>
+            <li>Menu, cart and drink customization</li>
+            <li>Checkout with order numbers plus pickup or delivery</li>
+            <li>Hiring section with an application form</li>
+            <li>Customer reviews</li>
+            <li>Serverless back-end with origin checks and a spam honeypot</li>
+          </ul>
+          <div class="btns">
+            <a class="btn primary" href="https://albsoldier.github.io/pillboxhillbeanmachine/" target="_blank" rel="noopener">Live site ↗</a>
+            <a class="btn" href="https://github.com/Albsoldier/pillboxhillbeanmachine" target="_blank" rel="noopener">Code</a>
+          </div>
+        </div>
+      </article>
+
+      <h2 style="margin-top:56px">More on GitHub</h2>
+      <p class="sub" style="margin-bottom:0">Pulled in live from my public repositories.</p>
+      <div class="grid" id="repos"><p class="empty">Loading repositories…</p></div>
+    </div>
+  </section>
+
+  <!-- ====== EDIT ME: skills ====== -->
+  <section id="skills">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <p class="sub">What I work with.</p>
+      <div class="skills">
+        <div class="skill-box"><h3>Front-end</h3><ul><li>HTML &amp; semantic markup</li><li>CSS, responsive layout</li><li>JavaScript (vanilla)</li></ul></div>
+        <div class="skill-box"><h3>Back-end</h3><ul><li>Cloudflare Workers</li><li>REST APIs &amp; webhooks</li><li>Discord integrations</li></ul></div>
+        <div class="skill-box"><h3>Tools</h3><ul><li>Git &amp; GitHub</li><li>GitHub Pages</li><li>Claude Code</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== EDIT ME: about ====== -->
+  <section id="about" class="about">
+    <div class="wrap">
+      <h2>About me</h2>
+      <p>I like building websites that people actually use: places to order a coffee, apply for a job, or leave a review. I keep things simple, fast and easy to maintain.</p>
+      <p>Right now I'm learning more about back-end development and taking on small projects for businesses and communities.</p>
+    </div>
+  </section>
+
+  <!-- ====== EDIT ME: contact links ====== -->
+  <section id="contact">
+    <div class="wrap">
+      <h2>Get in touch</h2>
+      <p class="sub">Have a project in mind? I'd love to hear about it.</p>
+      <div class="contact">
+        <a class="btn primary" href="https://github.com/Albsoldier" target="_blank" rel="noopener">GitHub ↗</a>
+        <!-- Uncomment and fill in to add more:
+        <a class="btn" href="mailto:you@example.com">Email</a>
+        <a class="btn" href="https://discord.com/users/YOUR_ID">Discord</a>
+        -->
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> Albsoldier · Built with plain HTML &amp; hosted on GitHub Pages</div>
+</footer>
+
+<script>
+  const USER = "Albsoldier";
+  // Repos to leave out of the "More on GitHub" grid (the portfolio itself and the featured project).
+  const HIDE = ["albsoldier.github.io", "pillboxhillbeanmachine"];
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Theme toggle (remembers your choice)
+  const root = document.documentElement;
+  try { const t = localStorage.getItem("theme"); if (t) root.dataset.theme = t; } catch {}
+  document.getElementById("themeBtn").onclick = () => {
+    const dark = root.dataset.theme
+      ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch {}
+  };
+
+  // Load public repos from GitHub
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  fetch(`https://api.github.com/users/${USER}/repos?sort=updated&per_page=30`)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(repos => {
+      const list = repos.filter(r => !r.fork && !HIDE.includes(r.name.toLowerCase()));
+      const el = document.getElementById("repos");
+      if (!list.length) { el.innerHTML = '<p class="empty">More projects coming soon.</p>'; return; }
+      el.innerHTML = list.map(r => `
+        <a class="card" href="${esc(r.homepage || r.html_url)}" target="_blank" rel="noopener">
+          <h4>${esc(r.name)}</h4>
+          <p>${esc(r.description || "No description yet.")}</p>
+          <div class="meta">${r.language ? `<span>● ${esc(r.language)}</span>` : ""}<span>★ ${r.stargazers_count}</span></div>
+        </a>`).join("");
+    })
+    .catch(() => {
+      document.getElementById("repos").innerHTML =
+        `<p class="empty">Couldn't load repositories. <a href="https://github.com/${USER}?tab=repositories">See them on GitHub ↗</a></p>`;
+    });
+</script>
+</body>
+</html>
